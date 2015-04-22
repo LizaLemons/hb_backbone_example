@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ex 2</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.2/handlebars.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+
+    <!-- //////////////////////////// -->
+    <!-- ////// Part 1: Define ////// -->
+    <!-- //////////////////////////// -->
+
+	<!-- #1 Define template for model -->
+	<script id="modelTemplate" type="text/x-handlebars-template">
+		<div>
+			<ol>
+				<li>{{name}}</li>
+				<ul>
+					<li>Title: {{title}}</li>
+					<li>Location: {{location}}</li>
+					<li>Department: {{department}}</li>
+					<li>Collection name: {{collectionName}}</li>
+				</ul>
+			<ol>
+		</div>
+	</script>
+
+	<!-- #2 Define template for collection -->
+	<script id="collectionTemplate" type="text/x-handlebars-template">
+		<div> 
+			<hr>
+			<br>
+			<span>Collection name: </span>
+			<ol>
+			{{#each [] }}
+				<li>{{this.name}}</li>
+			{{/each}}
+			</ol>
+		</div>
+	</script>
+	<!-- End Templating Section -->
+
+	<script>
+		// #3 Define model
+		var EmployeeModel = Backbone.Model.extend({
+
+		});
+
+		var FilterModel = Backbone.Model.extend({
+
+		});
+
+		// #4 Define collection
+		var EmployeeCollection = Backbone.Collection.extend({
+			model: EmployeeModel,
+
+			byDepartment: function(department) {
+				filtered = this.filter(function(employee) {
+					return employee.get("department") === department;
+				});
+				return new EmployeeCollection(filtered);
+			},
+
+			byLocation: function(location) {
+				filtered = this.filter(function(employee) {
+					return employee.get("location") === location;
+				});
+				return new EmployeeCollection(filtered);
+			}
+		});
+
+		// Returns array of models, not new collection:
+		// var nycGroup = EmployeeCollection.byLocation("New York City");
+
+		// #5 Define view for model
+		var modelView = Backbone.View.extend({
+			render: function() {
+				var source		=	$('#modelTemplate').html(); 
+				var template 	=	Handlebars.compile(source);
+				var html 		= 	template(this.model.toJSON());
+				$(this.el).html(html);
+			}
+		});
+
+		// #6 Define view for collection 
+		var collectionView = Backbone.View.extend({
+			render: function() {
+				var source		=	$('#collectionTemplate').html(); 
+        		var template 	=	Handlebars.compile(source);
+        		var html 		= 	template(this.collection.toJSON());
+
+        		$(this.el).html(html); 
+			}, 
+			initialize: function() {
+				this.collection.on('add', this.render, this);
+			}
+		});
+
+        <!-- //////////////////////////// -->
+    	<!-- ////// Part 2: Create ////// -->
+    	<!-- //////////////////////////// -->
+
+        // #7 Create instance of employees collection
+        var allEmployees = new EmployeeCollection(); 
+
+        // #8 Create instances of employee model
+        var jack 	= 	new EmployeeModel({ 
+        	collectionName: "All Employees", 
+        	name: "Jack", 
+        	title: "Senior Astronaut", 
+        	location: "New York City", 
+        	department: "IT" 
+        });
+        var andres 	= 	new EmployeeModel({ 
+        	collectionName: "All Employees", 
+        	name: "Andres", 
+        	title: "Deep Sea Diver", 
+        	location: "New York City", 
+        	department: "IT" 
+        });
+        var chris 	= 	new EmployeeModel({ 
+        	collectionName: "All Employees", 
+        	name: "Chris", 
+        	title: "Senior Pastry Chef", 
+        	location: "London", 
+        	department: "IT" 
+        });
+        var liza 	= 	new EmployeeModel({ 
+        	collectionName: "All Employees", 
+        	name: "Liza", 
+        	title: "Junior Web Developer", 
+        	location: "Brussels", 
+        	department: "IT" 
+        });
+        var monica 	= 	new EmployeeModel({ 
+        	collectionName: "All Employees", 
+        	name: "Monica", 
+        	title: "HR Manager", 
+        	location: "London", 
+        	department: "HR" 
+        });
+        var erinn 	= 	new EmployeeModel({ 
+        	collectionName: "All Employees", 
+        	name: "Erinn", 
+        	title: "Senior Conference Coordinator", 
+        	location: "London", 
+        	department: "Conferences" 
+        });
+        var kelsey 	= 	new EmployeeModel({ 
+        	collectionName: "All Employees", 
+        	name: "Kelsey", 
+        	title: "Junior Conference Coordinator", 
+        	location: "New York City", 
+        	department: "Conferences" 
+        });
+        var hussein = 	new EmployeeModel({ 
+        	collectionName: "All Employees", 
+        	name: "Hussein", 
+        	title: "Senior Accountant", 
+        	location: "Brussels", 
+        	department: "Accounting" 
+        });
+
+        // #9 Create instances of model view
+        var jackView = new modelView({
+        	model: jack
+        }); 
+        var andresView = new modelView({
+        	model: andres
+        }); 
+        var chrisView = new modelView({
+        	model: chris
+        }); 
+        var lizaView = new modelView({
+        	model: liza
+        }); 
+        var monicaView = new modelView({
+        	model: monica
+        }); 
+        var erinnView = new modelView({
+        	model: erinn
+        }); 
+        var kelseyView = new modelView({
+        	model: kelsey
+        }); 
+        var husseinView = new modelView({
+        	model: hussein
+        }); 
+
+        // #10 Create instance of collection view 
+        var allEmployeesView = new collectionView ({
+        	collection: allEmployees
+        }); 
+
+        $(document).ready(function() {
+        	// #11 Set the els of the model views
+        	jackView.el 	= $('#jackContainer');
+        	andresView.el 	= $('#andresContainer');
+        	chrisView.el 	= $('#chrisContainer');
+        	lizaView.el 	= $('#lizaContainer');
+        	monicaView.el 	= $('#monicaContainer');
+        	erinnView.el 	= $('#erinnContainer');
+        	kelseyView.el 	= $('#kelseyContainer');
+        	husseinView.el 	= $('#husseinContainer');
+
+        	// #12 Set the el of the collection views
+        	allEmployeesView.el = $('#allEmployeesContainer');
+
+        	// #13 Add model instances to the collection
+        	allEmployees.add(jack); 
+        	allEmployees.add(andres); 
+        	allEmployees.add(chris); 
+        	allEmployees.add(liza); 
+        	allEmployees.add(monica); 
+        	allEmployees.add(erinn); 
+        	allEmployees.add(kelsey); 
+        	allEmployees.add(hussein); 
+
+        	// #14 Render the instances of the model views 
+        	jackView.render();
+        	andresView.render();
+        	chrisView.render();
+        	lizaView.render();
+        	monicaView.render();
+        	erinnView.render();
+        	kelseyView.render();
+        	husseinView.render();
+
+        	// #15 Render the instances of the collection views 
+        	// allEmployeesView.render(); 
+
+        	// Filter the collection by location
+        	var nycGroup 		= allEmployees.where({ location: "New York City" });
+        	var londonGroup 	= allEmployees.where({ location: "New York City" });
+        	var brusselsGroup 	= allEmployees.where({ location: "New York City" });
+
+        	// Filter the collection by department
+        	var itGroup 			= allEmployees.where({ department: "IT" });
+        	var accountingGroup 	= allEmployees.where({ department: "IT" });
+        	var hrGroup 			= allEmployees.where({ department: "IT" });
+        	var conferencesGroup 	= allEmployees.where({ department: "IT" });
+
+        });
+
+	</script>
+</head>
+<body>
+	<!-- Models -->
+	<div id="modelsContainer">
+		<h2>Models:</h2>
+		<div id="jackContainer"></div>
+		<div id="andresContainer"></div>
+		<div id="chrisContainer"></div>
+		<div id="lizaContainer"></div>
+		<div id="monicaContainer"></div>
+		<div id="erinnContainer"></div>
+		<div id="kelseyContainer"></div>
+		<div id="husseinContainer"></div>
+	</div>
+	<hr>
+	<!-- Collections -->
+	<div id="collectionsContainer">
+		<h2>Collections:</h2>
+		<div id="allEmployeesContainer"></div><br>
+	</div>
+	<hr>
+	<div>
+		<h2>Filtered:</h2>
+
+		<h3>Locations:</h3>
+		<span>New York</span>
+		<div id="filterCollection1"></div><br>
+		<span>London</span>
+		<div id="filterCollection1"></div><br>
+		<span>Brussels</span>
+		<div id="filterCollection1"></div><br>
+		
+		<h3>Departments:</h3>
+		<span>IT</span>
+		<div id="filterCollection1"></div><br>
+		<span>HR</span>
+		<div id="filterCollection1"></div><br>
+		<span>Conferences</span>
+		<div id="filterCollection1"></div><br>
+	</div>
+</body>
+</html>
