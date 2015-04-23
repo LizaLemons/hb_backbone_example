@@ -16,24 +16,23 @@
 	<!-- #1 Define template for model -->
 	<script id="modelTemplate" type="text/x-handlebars-template">
 		<div>
-			<ol>
-				<li>{{name}}</li>
+			<ul>
+				<li>{{id}}: {{name}}</li>
 				<ul>
 					<li>Title: {{title}}</li>
 					<li>Location: {{location}}</li>
 					<li>Department: {{department}}</li>
 					<li>Collection name: {{collectionName}}</li>
 				</ul>
-			<ol>
+			<ul>
 		</div>
 	</script>
 
 	<!-- #2 Define template for collection -->
+    <!-- {{this.collection.at(0).get('collectionName');}} -->
 	<script id="collectionTemplate" type="text/x-handlebars-template">
 		<div> 
 			<hr>
-			<br>
-			<span>Collection name: </span>
 			<ol>
 			{{#each [] }}
 				<li>{{this.name}}</li>
@@ -50,8 +49,10 @@
 		});
 
 		var FilterModel = Backbone.Model.extend({
-
+            // pass 'type' (location/department) and 'name' (ie NYC)
 		});
+
+
 
 		// #4 Define collection
 		var EmployeeCollection = Backbone.Collection.extend({
@@ -108,7 +109,7 @@
 
         // #8 Create instances of employee model
         var jack 	= 	new EmployeeModel({ 
-        	id = id,
+        	id: 1,
             collectionName: "All Employees", 
         	name: "Jack", 
         	title: "Senior Astronaut", 
@@ -116,7 +117,7 @@
         	department: "IT" 
         });
         var andres 	= 	new EmployeeModel({ 
-        	id = id,
+        	id: 2,
             collectionName: "All Employees", 
         	name: "Andres", 
         	title: "Deep Sea Diver", 
@@ -124,7 +125,7 @@
         	department: "IT" 
         });
         var chris 	= 	new EmployeeModel({ 
-        	id = id,
+        	id: 3,
             collectionName: "All Employees", 
         	name: "Chris", 
         	title: "Senior Pastry Chef", 
@@ -132,7 +133,7 @@
         	department: "IT" 
         });
         var liza 	= 	new EmployeeModel({ 
-        	id = id,
+        	id: 4,
             collectionName: "All Employees", 
         	name: "Liza", 
         	title: "Junior Web Developer", 
@@ -140,7 +141,7 @@
         	department: "IT" 
         });
         var monica 	= 	new EmployeeModel({ 
-        	id = id,
+        	id: 5,
             collectionName: "All Employees", 
         	name: "Monica", 
         	title: "HR Manager", 
@@ -148,7 +149,7 @@
         	department: "HR" 
         });
         var erinn 	= 	new EmployeeModel({ 
-        	id = id,
+        	id: 6,
             collectionName: "All Employees", 
         	name: "Erinn", 
         	title: "Senior Conference Coordinator", 
@@ -156,7 +157,7 @@
         	department: "Conferences" 
         });
         var kelsey 	= 	new EmployeeModel({ 
-        	id = id,
+        	id: 7,
             collectionName: "All Employees", 
         	name: "Kelsey", 
         	title: "Junior Conference Coordinator", 
@@ -164,7 +165,7 @@
         	department: "Conferences" 
         });
         var hussein = 	new EmployeeModel({ 
-        	id = id,
+        	id: 8,
             collectionName: "All Employees", 
         	name: "Hussein", 
         	title: "Senior Accountant", 
@@ -240,16 +241,63 @@
         	// #15 Render the instances of the collection views 
         	// allEmployeesView.render(); 
 
-        	// Filter the collection by location
-        	var nycGroup 		= allEmployees.where({ location: "New York City" });
-        	var londonGroup 	= allEmployees.where({ location: "New York City" });
-        	var brusselsGroup 	= allEmployees.where({ location: "New York City" });
+            // Filter the collection by location
+            var nycGroupResults         =   allEmployees.where({ location: "New York City" });
+            var filteredNYC             =   new EmployeeCollection(nycGroupResults);
+            var filteredNYCView         =   new collectionView({
+                collection: filteredNYC
+            });
+            filteredNYCView.el = $('#filteredNYCView');
+            filteredNYCView.render();
 
-        	// Filter the collection by department
-        	var itGroup 			= allEmployees.where({ department: "IT" });
-        	var accountingGroup 	= allEmployees.where({ department: "IT" });
-        	var hrGroup 			= allEmployees.where({ department: "IT" });
-        	var conferencesGroup 	= allEmployees.where({ department: "IT" });
+            var londonGroupResults      =   allEmployees.where({ location: "London" });
+            var filteredLondon          =   new EmployeeCollection(londonGroupResults);
+            var filteredLondonView      =   new collectionView({
+                collection: filteredLondon
+            });
+            filteredLondonView.el       =   $('#filteredLondonView');
+            filteredLondonView.render(); 
+
+            var brusselsGroupResults    =   allEmployees.where({ location: "Brussels" });
+            var filteredBrussels        =   new EmployeeCollection(brusselsGroupResults);
+            var filteredBrusselsView    =   new collectionView({
+                collection: filteredBrussels
+            });
+            filteredBrusselsView.el     =   $('#filteredBrusselsView');
+            filteredBrusselsView.render(); 
+
+            // Filter the collection by department
+            var ITGroupResults          =   allEmployees.where({ department: "IT" });
+            var filteredIT              =   new EmployeeCollection(ITGroupResults);
+            var filteredITView          =   new collectionView({
+                collection: filteredIT
+            });
+            filteredITView.el           =   $('#filteredITView');
+            filteredITView.render(); 
+
+            var accountingGroupResults    =   allEmployees.where({ department: "Accounting" });
+            var filteredAccounting        =   new EmployeeCollection(accountingGroupResults);
+            var filteredAccountingView    =   new collectionView({
+                collection: filteredAccounting
+            });
+            filteredAccountingView.el     =   $('#filteredAccountingView');
+            filteredAccountingView.render();  
+            
+            var HRGroupResults          =   allEmployees.where({ department: "HR" });
+            var filteredHR              =   new EmployeeCollection(HRGroupResults);
+            var filteredHRView          =   new collectionView({
+                collection: filteredHR
+            });
+            filteredHRView.el           =   $('#filteredHRView');
+            filteredHRView.render();  
+
+            var conferencesGroupResults     =   allEmployees.where({ department: "Conferences" });
+            var filteredConferences         =   new EmployeeCollection(conferencesGroupResults);
+            var filteredConferencesView     =   new collectionView({
+                collection: filteredConferences
+            });
+            filteredConferencesView.el      =   $('#filteredConferencesView');
+            filteredConferencesView.render(); 
 
         });
 
@@ -280,19 +328,21 @@
 
 		<h3>Locations:</h3>
 		<span>New York</span>
-		<div id="filterCollection1"></div><br>
+		<div id="filteredNYCView"></div><br>
 		<span>London</span>
-		<div id="filterCollection1"></div><br>
+		<div id="filteredLondonView"></div><br>
 		<span>Brussels</span>
-		<div id="filterCollection1"></div><br>
+		<div id="filteredBrusselsView"></div><br>
 		
 		<h3>Departments:</h3>
 		<span>IT</span>
-		<div id="filterCollection1"></div><br>
-		<span>HR</span>
-		<div id="filterCollection1"></div><br>
-		<span>Conferences</span>
-		<div id="filterCollection1"></div><br>
+		<div id="filteredITView"></div><br>
+		<span>Accounting</span>
+		<div id="filteredAccountingView"></div><br>
+        <span>HR</span>
+        <div id="filteredHRView"></div><br>		
+        <span>Conferences</span>
+		<div id="filteredConferencesView"></div><br>
 	</div>
 </body>
 </html>
