@@ -50,8 +50,8 @@
 		////////////////////////////
 		////// JSON employees //////
 		////////////////////////////
-		var allEmployeesObj = {
-			"jackJSON": {
+		var allEmployeesObj = [
+			{
 				"id": 1,
 				"name": "Jack",
 				"title": "Senior Astronaut",
@@ -59,7 +59,7 @@
 				"department": "IT",
 				"collectionName": "All Employees"
 			},
-			"andresJSON": {
+			{
 				"id": 2,
 				"name": "Andres",
 				"title": "Deep Sea Diver",
@@ -67,7 +67,7 @@
 				"department": "IT",
 				"collectionName": "All Employees"
 			},
-			"chrisJSON": {
+			{
 				"id": 3,
 				"name": "Chris",
 				"title": "Senior Pastry Chef",
@@ -75,7 +75,7 @@
 				"department": "IT",
 				"collectionName": "All Employees"
 			},
-			"lizaJSON": {
+			{
 				"id": 4,
 				"name": "Liza",
 				"title": "Junior Web Developer",
@@ -83,7 +83,7 @@
 				"department": "IT",
 				"collectionName": "All Employees"
 			},
-			"monicaJSON": {
+			{
 				"id": 5,
 				"name": "Monica",
 				"title": "HR Manager",
@@ -91,7 +91,7 @@
 				"department": "HR",
 				"collectionName": "All Employees"
 			},
-			"erinnJSON": {
+			{
 				"id": 6,
 				"name": "Erinn",
 				"title": "Senior Conference Coordinator",
@@ -99,7 +99,7 @@
 				"department": "Conferences",
 				"collectionName": "All Employees"
 			},
-			"kelseyJSON": {
+			{
 				"id": 7,
 				"name": "Kelsey",
 				"title": "Junior Conference Coordinator",
@@ -107,7 +107,7 @@
 				"department": "Conferences",
 				"collectionName": "All Employees"
 			},
-			"husseinJSON": {
+			{
 				"id": 8,
 				"name": "Hussein",
 				"title": "Senior Accountant",
@@ -115,7 +115,7 @@
 				"department": "Accounting",
 				"collectionName": "All Employees"
 			}
-		};
+		];
 
 		// Define Model
 		var EmployeeModel = Backbone.Model.extend({
@@ -184,18 +184,12 @@
 
 
 		});
-
-
+		
 	</script>
-
-
-
 </head>
 <body>
 	<div class="container">
 		<br>
-		<br>
-
 		<!-- Buttons: -->
 		<div class="container-fluid">
 			<div class="row">
@@ -247,19 +241,17 @@
 				</div>
 			</div>
 		</div> <!-- End Buttons -->
-		<br>
 		<hr />
-		<br>
-		<br>
+
 		<!-- Display collections here: -->
-			<div class="container-fluid">
-				<div class="row">
-					<div id="collectionsContainer">
-						<h2>Collections:</h2>
-						<div id="allEmployeesContainer"></div><br>
-					</div>
+		<div class="container-fluid">
+			<div class="row">
+				<div id="collectionsContainer">
+					<h2>Collections:</h2>
+					<div id="allEmployeesContainer"></div><br>
 				</div>
 			</div>
+		</div>
 	</div>
 </body>
 </html>
