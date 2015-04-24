@@ -148,6 +148,18 @@
 			},
 			initialize: function() {
 				this.collection.on('add', this.render, this);
+			},
+
+			//////////////////////
+			//// Events //////////
+			//////////////////////
+
+			// Button click event logic goes here
+			events: {
+				"click .checkbox" : "checkboxClickHandler"
+			},
+			checkboxClickHandler: function(event) {
+				alert("Oh hai");
 			}
 		});
 
@@ -176,15 +188,12 @@
 			// Set the el of the Collection View:
 			allEmployeesCollectionView.el = $('#allEmployeesContainer');
 
-			// Add the instances of the Model to the Collection:
-			// ???
-
 			// Render the Collection View:
 			allEmployeesCollectionView.render();
 
 
 		});
-		
+
 	</script>
 </head>
 <body>
