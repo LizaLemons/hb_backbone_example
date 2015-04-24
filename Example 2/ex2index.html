@@ -200,7 +200,11 @@
         // #10 Create instance of collection view 
         var allEmployeesView = new collectionView ({
         	collection: allEmployees
-        }); 
+        });
+
+		////////////////////////////
+		// Part 3: DOM ready fxn ///
+		////////////////////////////
 
         $(document).ready(function() {
         	// #11 Set the els of the model views
@@ -217,14 +221,14 @@
         	allEmployeesView.el = $('#allEmployeesContainer');
 
         	// #13 Add model instances to the collection
-        	allEmployees.add(jack); 
-        	allEmployees.add(andres); 
-        	allEmployees.add(chris); 
-        	allEmployees.add(liza); 
-        	allEmployees.add(monica); 
-        	allEmployees.add(erinn); 
-        	allEmployees.add(kelsey); 
-        	allEmployees.add(hussein); 
+        	allEmployees.add(jack);
+        	allEmployees.add(andres);
+        	allEmployees.add(chris);
+        	allEmployees.add(liza);
+        	allEmployees.add(monica);
+        	allEmployees.add(erinn);
+        	allEmployees.add(kelsey);
+        	allEmployees.add(hussein);
 
         	// #14 Render the instances of the model views 
         	jackView.render();

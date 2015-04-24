@@ -151,6 +151,11 @@
 			}
 		});
 
+
+		////////////////////////////
+		////// Part 2: Create //////
+		////////////////////////////
+
 		// Make sure it's really a JSON string
 		var allEmployeesJSON = JSON.stringify(allEmployeesObj);
 		// Parse the JSON string
@@ -158,25 +163,31 @@
 		// Pass to a newly instantiated Collection
 		var allEmployeesCollection = new EmployeesCollection(employees);
 
-
-
-
 		// Create an instance of a View for this new Collection:
 		var allEmployeesCollectionView = new collectionView({ collection: allEmployeesCollection });
 
-		allEmployeesCollectionView.el = $('#allEmployeesContainer');
-		allEmployeesCollectionView.render();
+
+		////////////////////////////
+		// Part 3: DOM ready fxn ///
+		////////////////////////////
+
+		$(document).ready(function() {
+
+			// Set the el of the Collection View:
+			allEmployeesCollectionView.el = $('#allEmployeesContainer');
+
+			// Add the instances of the Model to the Collection:
+			// ???
+
+			// Render the Collection View:
+			allEmployeesCollectionView.render();
+
+
+		});
 
 
 	</script>
 
-    <!-- //////////////////////////// -->
-	<!-- ////// Part 2: Create ////// -->
-	<!-- //////////////////////////// -->
-
-	<!-- //////////////////////////// -->
-	<!-- // Part 3: DOM ready fxn /// -->
-	<!-- //////////////////////////// -->
 
 
 </head>
