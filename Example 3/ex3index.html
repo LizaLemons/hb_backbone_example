@@ -18,24 +18,10 @@
     <!-- ////// Part 1: Define ////// -->
     <!-- //////////////////////////// -->
 
-	<!-- Template for model -->
-	<script id="modelTemplate" type="text/x-handlebars-template">
-		<div>
-			<ul>
-				<li>{{id}}: {{name}}</li>
-				<ul>
-					<li>Title: {{title}}</li>
-					<li>Location: {{location}}</li>
-					<li>Department: {{department}}</li>
-					<li>Collection name: {{collectionName}}</li>
-				</ul>
-			</ul>
-		</div>
-	</script>
-
 	<!-- Template for collection -->
 	<script id="collectionTemplate" type="text/x-handlebars-template">
 		<div>
+			<h2>{{ this.[0].collectionName }} Collection:</h2>
 			<hr>
 			<ol>
 				{{#each [] }}
@@ -45,8 +31,8 @@
 		</div>
 	</script>
 
-	<script>
 
+	<script>
 		////////////////////////////
 		////// JSON employees //////
 		////////////////////////////
@@ -168,13 +154,12 @@
 		////// Part 2: Create //////
 		////////////////////////////
 
-		// Make sure it's really a JSON string
+		// Make sure it's really a JSON string:
 		var allEmployeesJSON = JSON.stringify(allEmployeesObj);
-		// Parse the JSON string
+		// Parse the JSON string:
 		var employees = JSON.parse(allEmployeesJSON);
-		// Pass to a newly instantiated Collection
+		// Pass to a newly instantiated Collection:
 		var allEmployeesCollection = new EmployeesCollection(employees);
-
 		// Create an instance of a View for this new Collection:
 		var allEmployeesCollectionView = new collectionView({ collection: allEmployeesCollection });
 
@@ -191,7 +176,6 @@
 			// Render the Collection View:
 			allEmployeesCollectionView.render();
 
-
 		});
 
 	</script>
@@ -199,7 +183,7 @@
 <body>
 	<div class="container">
 		<br>
-		<!-- Buttons: -->
+		<!-- Toggles: -->
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-6">
@@ -249,14 +233,13 @@
 					</div>
 				</div>
 			</div>
-		</div> <!-- End Buttons -->
+		</div> <!-- End Toggles -->
 		<hr />
 
 		<!-- Display collections here: -->
 		<div class="container-fluid">
 			<div class="row">
 				<div id="collectionsContainer">
-					<h2>Collections:</h2>
 					<div id="allEmployeesContainer"></div><br>
 				</div>
 			</div>
