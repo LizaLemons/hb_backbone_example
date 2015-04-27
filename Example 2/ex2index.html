@@ -232,7 +232,7 @@
         	allEmployees.add(kelsey);
         	allEmployees.add(hussein);
 
-        	// #14 Render the instances of the model views 
+        	// #14 Render the instances of the model views
         	jackView.render();
         	andresView.render();
         	chrisView.render();
@@ -242,8 +242,8 @@
         	kelseyView.render();
         	husseinView.render();
 
-        	// #15 Render the instances of the collection views 
-        	// allEmployeesView.render(); 
+        	// #15 Render the instances of the collection views
+        	// allEmployeesView.render();
 
             // Filter the collection by location
             var nycGroupResults         =   allEmployees.where({ location: "New York City" });
@@ -260,7 +260,7 @@
                 collection: filteredLondon
             });
             filteredLondonView.el       =   $('#filteredLondonView');
-            filteredLondonView.render(); 
+            filteredLondonView.render();
 
             var brusselsGroupResults    =   allEmployees.where({ location: "Brussels" });
             var filteredBrussels        =   new EmployeeCollection(brusselsGroupResults);
@@ -268,7 +268,7 @@
                 collection: filteredBrussels
             });
             filteredBrusselsView.el     =   $('#filteredBrusselsView');
-            filteredBrusselsView.render(); 
+            filteredBrusselsView.render();
 
             // Filter the collection by department
             var ITGroupResults          =   allEmployees.where({ department: "IT" });
@@ -277,7 +277,7 @@
                 collection: filteredIT
             });
             filteredITView.el           =   $('#filteredITView');
-            filteredITView.render(); 
+            filteredITView.render();
 
             var accountingGroupResults    =   allEmployees.where({ department: "Accounting" });
             var filteredAccounting        =   new EmployeeCollection(accountingGroupResults);
@@ -285,15 +285,15 @@
                 collection: filteredAccounting
             });
             filteredAccountingView.el     =   $('#filteredAccountingView');
-            filteredAccountingView.render();  
-            
+            filteredAccountingView.render();
+
             var HRGroupResults          =   allEmployees.where({ department: "HR" });
             var filteredHR              =   new EmployeeCollection(HRGroupResults);
             var filteredHRView          =   new collectionView({
                 collection: filteredHR
             });
             filteredHRView.el           =   $('#filteredHRView');
-            filteredHRView.render();  
+            filteredHRView.render();
 
             var conferencesGroupResults     =   allEmployees.where({ department: "Conferences" });
             var filteredConferences         =   new EmployeeCollection(conferencesGroupResults);
@@ -303,20 +303,25 @@
             filteredConferencesView.el      =   $('#filteredConferencesView');
             filteredConferencesView.render();
 
-
-			// Random
-			var randomGroupResults     =   allEmployees.filter( function(employee) {
-				return employee.get("location") == "London" && employee.get("department") == "IT";
+			// Same identifier:
+			var sameGroupResults     =   allEmployees.filter( function(employee) {
+				return employee.get("location") == "London" || employee.get("location") == "New York City";
 			});
-
-			console.log(randomGroupResults);
-
-			var filteredRandom         =   new EmployeeCollection(randomGroupResults);
-            var filteredRandomView     =   new collectionView({
-                collection: filteredRandom
+			var filteredSame         =   new EmployeeCollection(sameGroupResults);
+            var filteredSameView     =   new collectionView({
+                collection: filteredSame
             });
-            filteredRandomView.el      =   $('#filteredRandomView');
-            filteredRandomView.render();
+            filteredSameView.el      =   $('#filteredSameView');
+            filteredSameView.render();
+
+			// Different identifiers:
+			var differentGroupResults     =   allEmployees.where({ location: "New York City", department: "IT" });
+			var filteredDifferent         =   new EmployeeCollection(differentGroupResults);
+			var filteredDifferentView     =   new collectionView({
+				collection: filteredDifferent
+			});
+			filteredDifferentView.el      =   $('#filteredDifferentView');
+			filteredDifferentView.render();
 
         });
 
@@ -364,9 +369,11 @@
 		<span>Conferences</span>
 		<div id="filteredConferencesView"></div><br>
 
-		<h3>Random:</h3>
-		<span>Random</span>
-		<div id="filteredRandomView"></div><br>
+		<span>Same</span>
+		<div id="filteredSameView"></div><br>
+
+		<span>Different</span>
+		<div id="filteredDifferentView"></div><br>
 
 
 	</div>

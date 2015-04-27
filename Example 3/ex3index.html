@@ -21,13 +21,18 @@
 	<!-- Template for collection -->
 	<script id="collectionTemplate" type="text/x-handlebars-template">
 		<div>
-			<h2>{{ this.[0].collectionName }} Collection:</h2>
+			<h2>{{ this.[0].collectionName }} collection:</h2>
 			<hr>
 			<ol>
 				{{#each [] }}
 				<li>{{this.name}}</li>
 				{{/each}}
 			</ol>
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-primary">Click Here</button>
+				<br />
+				<button type="button" class="btn btn-info">Or Here</button>
+			</div>
 		</div>
 	</script>
 
@@ -125,6 +130,15 @@
 
 		// Define View for Collection
 		var collectionView = Backbone.View.extend({
+			initialize: function() {
+				this.collection.on('add', this.render, this);
+			},
+			//////////////////////
+			//// Events //////////
+			//////////////////////
+			events: {
+				"click input[type=button]" : "checkboxClickHandler"
+			},
 			render: function() {
 				var source		=	$('#collectionTemplate').html();
 				var template 	=	Handlebars.compile(source);
@@ -132,19 +146,7 @@
 
 				$(this.el).html(html);
 			},
-			initialize: function() {
-				this.collection.on('add', this.render, this);
-			},
-
-			//////////////////////
-			//// Events //////////
-			//////////////////////
-
-			// Button click event logic goes here
-			events: {
-				"click .checkbox" : "checkboxClickHandler"
-			},
-			checkboxClickHandler: function(event) {
+			checkboxClickHandler: function(ev) {
 				alert("Oh hai");
 			}
 		});
