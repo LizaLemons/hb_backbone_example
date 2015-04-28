@@ -34,6 +34,9 @@
 	<script>
 
 		$(document).ready(function() {
+				
+			
+
 			////////////////////////////
 			////// JSON employees //////
 			////////////////////////////
@@ -129,23 +132,45 @@
 				initialize: function() {
 
 				},
-				//////////////////////
-				//// Events //////////
-				//////////////////////
 				events: {
-					"click .checkbox .toggle-group" : "checkboxClickHandler",
+					"change .checkbox .toggle input" : "checkboxClickHandler",
 				},
-				checkboxClickHandler: function(ev) {
-					var checked = []; 
+				checkboxClickHandler: function(ev) { 
+
+					checked = []; 
 
 					$.each($("input[name='checkOptions']:checked"), function(){            
 		                checked.push($(this).attr('value'));
-		            	console.log(checked);
-		            });
+		            });   
+
+		            console.log(checked);     
+
+		            // checked = array of strings
+		            // loop over checked
+		            // if i matches a location/dept, push into locations/dept array
+		            // get length of location and dept arrays
+		            	// if one of one type chosen, do single Where statement 
+		            	// if one of each type chosen, do multi where statement
+		            	// if multiple from one are chosen, do filter statement
+		            	// if multiple from one are chosen and one from other type, do where > collection -> filter 
+		            	// multiple from each type, ex: show all employees in NY & London in the IT & Conferences depts
+		            		// do: 
+		            		// filter for London or NYC > new collection 
+		            		// -> where dept = IT > new collection 
+		            		// -> where dept = Accounting > new collection 
 
 
 
-				},
+
+
+
+				}, // end checkboxClickHandler fxn
+
+
+
+
+
+
 				render: function() {
 					var source		=	$('#collectionTemplate').html();
 					var template 	=	Handlebars.compile(source);
@@ -153,7 +178,7 @@
 
 					$("#employees-render-container").html(html);
 				}
-			});
+			}); // end collectionView 
 
 
 			////////////////////////////
@@ -194,50 +219,55 @@
 								<div class="col-md-6">
 									
 									<h2>Locations:</h2>
-									<div class="checkbox">
-									  <label>
-									    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="nyc">
-									    New York City
-									  </label>
-									</div>
-									<div class="checkbox">
-									  <label>
-									    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="london">
-									    London
-									  </label>
-									</div>			
-									<div class="checkbox">
-									  <label>
-									    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="brussels">
-									    Brussels
-									  </label>
+									<div class="location-checkboxes">
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="nyc">
+										    New York City
+										  </label>
+										</div>
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="london">
+										    London
+										  </label>
+										</div>			
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="brussels">
+										    Brussels
+										  </label>
+										</div>
 									</div>
 
 									<h2>Departments:</h2>
-									<div class="checkbox">
-									  <label>
-									    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="it">
-									    IT
-									  </label>
-									</div>			
-									<div class="checkbox">
-									  <label>
-									    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="accounting">
-									    Accounting
-									  </label>
+									<div class="department-checkboxes">
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="it">
+										    IT
+										  </label>
+										</div>			
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="accounting">
+										    Accounting
+										  </label>
+										</div>
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="hr">
+										    HR
+										  </label>
+										</div>
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="conferences">
+										    Conferences
+										  </label>
+										</div>
 									</div>
-									<div class="checkbox">
-									  <label>
-									    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="hr">
-									    HR
-									  </label>
-									</div>
-									<div class="checkbox">
-									  <label>
-									    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="conferences">
-									    Conferences
-									  </label>
-									</div>
+
 								</div>
 							</div>
 						</div><!-- End Toggles -->	

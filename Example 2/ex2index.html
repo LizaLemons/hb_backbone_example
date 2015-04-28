@@ -58,13 +58,13 @@
 		var EmployeeCollection = Backbone.Collection.extend({
 			model: EmployeeModel,
 
-			byDepartment: function(department) {
+			// not being used // 
+            byDepartment: function(department) {
 				filtered = this.filter(function(employee) {
 					return employee.get("department") === department;
 				});
 				return new EmployeeCollection(filtered);
 			},
-
 			byLocation: function(location) {
 				filtered = this.filter(function(employee) {
 					return employee.get("location") === location;
@@ -303,18 +303,8 @@
             filteredConferencesView.el      =   $('#filteredConferencesView');
             filteredConferencesView.render();
 
-			// Same identifier:
-			var sameGroupResults     =   allEmployees.filter( function(employee) {
-				return employee.get("location") == "London" || employee.get("location") == "New York City";
-			});
-			var filteredSame         =   new EmployeeCollection(sameGroupResults);
-            var filteredSameView     =   new collectionView({
-                collection: filteredSame
-            });
-            filteredSameView.el      =   $('#filteredSameView');
-            filteredSameView.render();
 
-			// Different identifiers:
+			// Different identifiers // where statement 
 			var differentGroupResults     =   allEmployees.where({ location: "New York City", department: "IT" });
 			var filteredDifferent         =   new EmployeeCollection(differentGroupResults);
 			var filteredDifferentView     =   new collectionView({
@@ -322,6 +312,71 @@
 			});
 			filteredDifferentView.el      =   $('#filteredDifferentView');
 			filteredDifferentView.render();
+
+
+            // Same identifier // filter 
+            var sameGroupResults     =   allEmployees.filter( function(employee) {
+                return employee.get("location") == "London" || employee.get("location") == "New York City";
+            });
+            var filteredSame         =   new EmployeeCollection(sameGroupResults);
+            var filteredSameView     =   new collectionView({
+                collection: filteredSame
+            });
+            filteredSameView.el      =   $('#filteredSameView');
+            filteredSameView.render();
+
+            
+            // Both // where and filter statements
+            // multiple from one type + single from the other type: 
+            var filterResults = allEmployees.filter( function(employee) {
+                return employee.get("location") == "London" || employee.get("location") == "New York City";
+            });
+            var newCollection = new EmployeeCollection(filterResults);
+            var filteredNew = newCollection.where({ department: "IT" });
+
+            console.log("All employees in London & NYC:", filterResults);
+            console.log("Only IT department:", filteredNew); 
+
+            var filteredMulti         =   new EmployeeCollection(filteredNew);
+            var filteredMultiView     =   new collectionView({
+                collection: filteredMulti
+            });
+            filteredMultiView.el      =   $('#filteredMultiView');
+            filteredMultiView.render();
+
+
+
+            // Multiple from both types: 
+            // All employees in NY & London in the IT & Conferences Depts
+            // yields 5:
+            
+            // all employees in london and all in nyc:
+            var filterResults = allEmployees.filter( function(employee) {
+                return employee.get("location") == "London" || employee.get("location") == "New York City";
+            });
+            var newCollection = new EmployeeCollection(filterResults);
+            
+            // ------->
+            var filteredNew = newCollection.filter( function() {
+                return employee.get("department") == "IT" || employee.get("department") == "Conferences";
+            });
+            console.log("This one: ", filteredNew); 
+
+
+            
+            var filteredNew = newCollection.where({ department: "IT" });
+
+            console.log("All employees in London & NYC:", filterResults);
+            console.log("Only IT department:", filteredNew); 
+
+            var filteredMulti         =   new EmployeeCollection(filteredNew);
+            var filteredMultiView     =   new collectionView({
+                collection: filteredMulti
+            });
+            filteredMultiView.el      =   $('#filteredMultiView');
+            filteredMultiView.render();
+
+
 
         });
 
@@ -369,12 +424,15 @@
 		<span>Conferences</span>
 		<div id="filteredConferencesView"></div><br>
 
-		<span>Same</span>
-		<div id="filteredSameView"></div><br>
 
-		<span>Different</span>
-		<div id="filteredDifferentView"></div><br>
+        <span>Different | where employee = NYC && IT</span>
+        <div id="filteredDifferentView"></div><br>
 
+        <span>Same | where employee = NYC | | London </span>
+        <div id="filteredSameView"></div><br>
+
+        <span>Multi | IT employees in NYC & London</span>
+		<div id="filteredMultiView"></div><br>
 
 	</div>
 </body>
