@@ -35,8 +35,6 @@
 
 		$(document).ready(function() {
 				
-			
-
 			////////////////////////////
 			////// JSON employees //////
 			////////////////////////////
@@ -137,18 +135,33 @@
 				},
 				checkboxClickHandler: function(ev) { 
 
-					checked = []; 
+					checked 		= 		[]; 
+					locations 		= 		[]; 
+					departments		= 		[]; 
 
 					$.each($("input[name='checkOptions']:checked"), function(){            
 		                checked.push($(this).attr('value'));
 		            });   
 
-		            console.log(checked);     
+		            console.log("Checked array:", checked);
 
-		            // checked = array of strings
-		            // loop over checked
-		            // if i matches a location/dept, push into locations/dept array
-		            // get length of location and dept arrays
+		            // 
+		            for (var i = 0; i < checked.length; i++) {
+		            	console.log("checked[i]:", checked[i]);
+
+		            	// if i == a location, push into location array 
+		            	if (checked[i] == "nyc" || checked[i] == "london" || checked[i] == "brussels") {
+		            		locations.push(checked[i]);
+		            		console.log("Locations array:", locations); 
+		            	} else {
+		            		departments.push(checked[i]);
+		            		console.log("Departments array:", departments);  
+		            	}
+		            	
+		            }; 
+
+
+		            	// get length of location and dept arrays
 		            	// if one of one type chosen, do single Where statement 
 		            	// if one of each type chosen, do multi where statement
 		            	// if multiple from one are chosen, do filter statement
@@ -157,8 +170,24 @@
 		            		// do: 
 		            		// filter for London or NYC > new collection 
 		            		// -> where dept = IT > new collection 
-		            		// -> where dept = Accounting > new collection 
+		            		// -> where dept = Accounting > new collection
 
+		            // loop through locations & departments
+		            // 1- locations = 1 
+		            
+		            if (locations.length == 1) {
+		            	var location = locations[0];
+		            	console.log("Location = 1", location);
+		            	// access the collection
+
+
+
+
+
+		            } else if (departments.length == 1) {
+		            	var department = departments[0];
+		            	console.log("Department = 1", department);
+		            }
 
 
 
@@ -206,7 +235,9 @@
 </head>
 <body>
 	<div class="container">
-		<!-- Display collections here: -->
+		<div class="container-fluid">
+			
+		</div>
 		<div class="container-fluid">
 			<div class="row">
 				<div id="collectionsContainer">
@@ -275,11 +306,14 @@
 
 						<!-- Render employees here -->
 						<div id="employees-render-container"></div>
+
+
 					</div>
 					<br>
 				</div>
 			</div>
 		</div>
 	</div>
+
 </body>
 </html>
