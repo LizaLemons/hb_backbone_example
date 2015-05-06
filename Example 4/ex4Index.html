@@ -139,26 +139,54 @@
 					locations 		= 		[]; 
 					departments		= 		[]; 
 
+					// each over the checked buttons & push into array 
 					$.each($("input[name='checkOptions']:checked"), function(){            
 		                checked.push($(this).attr('value'));
 		            });   
 
 		            console.log("Checked array:", checked);
 
-		            // 
+		            // loop through checked array; push i into location or dept array 
 		            for (var i = 0; i < checked.length; i++) {
-		            	console.log("checked[i]:", checked[i]);
 
 		            	// if i == a location, push into location array 
 		            	if (checked[i] == "nyc" || checked[i] == "london" || checked[i] == "brussels") {
 		            		locations.push(checked[i]);
-		            		console.log("Locations array:", locations); 
 		            	} else {
 		            		departments.push(checked[i]);
-		            		console.log("Departments array:", departments);  
 		            	}
 		            	
 		            }; 
+
+		            if (checked.length == 1) {
+		            	var value 				= 		checked[0];
+		            	console.log("value: ", value); 
+		            	var singleValResults 	= 		this.collection.where({ location: value }) || this.collection.where({ department: value });
+		            	
+		            	console.log("singleValResults: ", singleValResults); 
+		            };
+
+
+
+/*
+
+http://stackoverflow.com/questions/17121316/how-to-pluck-multiple-attributes-from-a-backbone-collection
+
+http://tech.pro/tutorial/1519/rendering-a-filtered-backbonecollection 
+	[
+		locations: [nyc,longdon,brusslel],
+		haircolor; [blue,grey,pink]
+
+	]
+
+
+
+
+
+*/
+
+
+
 
 
 		            	// get length of location and dept arrays
@@ -175,30 +203,22 @@
 		            // loop through locations & departments
 		            // 1- locations = 1 
 		            
-		            if (locations.length == 1) {
-		            	var location = locations[0];
-		            	console.log("Location = 1", location);
-		            	// access the collection
+		    //         if (locations.length == 1) {
+		    //         	var location = locations[0];
+		    //         	console.log("Location = 1", location);
+		    //         	// access the collection
+						// console.log("This:", this.collection); 
 
-
-
-
-
-		            } else if (departments.length == 1) {
-		            	var department = departments[0];
-		            	console.log("Department = 1", department);
-		            }
+		    //         } else if (departments.length == 1) {
+		    //         	var department = departments[0];
+		    //         	console.log("Department = 1", department);
+		    //         }
 
 
 
 
 
 				}, // end checkboxClickHandler fxn
-
-
-
-
-
 
 				render: function() {
 					var source		=	$('#collectionTemplate').html();
@@ -253,19 +273,19 @@
 									<div class="location-checkboxes">
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="nyc">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="New York City">
 										    New York City
 										  </label>
 										</div>
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="london">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="London">
 										    London
 										  </label>
 										</div>			
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="brussels">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brussels">
 										    Brussels
 										  </label>
 										</div>
@@ -275,25 +295,25 @@
 									<div class="department-checkboxes">
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="it">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="IT">
 										    IT
 										  </label>
 										</div>			
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="accounting">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Accounting">
 										    Accounting
 										  </label>
 										</div>
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="hr">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="HR">
 										    HR
 										  </label>
 										</div>
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="conferences">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Conferences">
 										    Conferences
 										  </label>
 										</div>
