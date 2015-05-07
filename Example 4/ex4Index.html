@@ -152,13 +152,17 @@
 		                checked[kind].push(val); 		                
 		            });   
 
+					// Filter the collection for models that match any values in checked[location] 
+					// Filter: Looks through each value in list (this.collection) & returns array of all values that eval. to true 
 					var filterResults = this.collection.filter( function() {
 						console.log("checked[location]: ", checked["location"]);
+					
+						var mappedResults = 
 
-						// _.each( checked["location"], function(i, loc) {
-						// 	console.log("loc: ", loc); 
-						// });	
-						
+						_.map( checked["location"], function(index, loc) {
+							console.log("loc: ", loc); 
+						 	mappedResults.concat();  
+						});	
 
 
 					});
