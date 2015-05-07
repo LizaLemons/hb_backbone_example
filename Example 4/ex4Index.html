@@ -129,60 +129,67 @@
 			var collectionView = Backbone.View.extend({
 				initialize: function() {
 
+
 				},
 				events: {
 					"change .checkbox .toggle input" : "checkboxClickHandler",
 				},
 				checkboxClickHandler: function(ev) { 
-
-					var checked	= [
-						{
-							locations: [] 
-						},
-						{
-							departments: []
-						} 
-					]; 
+					var singleLocCollection,  
+					
+					checked	= {
+							location: [],
+							department: []
+						}; 
 
 					// each over the checked buttons  
 					$.each($("input[name='checkOptions']:checked"), function(){            
 		                
 		                // get the value & kind
 		                var val = $(this).attr('value');
-		                var kind = $(this).attr('kind');		                
+		                var kind = $(this).attr('kind');
 
-		                // push val into the correct array based on kind
-		                if (kind == "location") {
-		                	checked[0]["locations"].push(val); 
-		                } else {
-		                	checked[1]["departments"].push(val); 
-		                };
+		                checked[kind].push(val); 		                
 		            });   
 
-	            	console.log("Checked array:", checked);
+					var filterResults = this.collection.filter( function() {
+						console.log("checked[location]: ", checked["location"]);
+
+						// _.each( checked["location"], function(i, loc) {
+						// 	console.log("loc: ", loc); 
+						// });	
+						
+
+
+					});
+	            	
+
+
 
 	            	// if only one location is checked: 
-	                if ( checked[0]["locations"].length == 1 ) { 
+	                if ( checked["location"].length == 0 ) {
+	                	this.render(this.collection.toJSON());
+	                } else { 
 	                	
 	                	// get the location name:
-	                	var singleLocation = checked[0]["locations"][0]; 
+	                	var singleLocation = checked["location"][0]; 
 	                	
 	                	// filter the collection for models that have this location:
 	                	var singleLocModels = this.collection.where({ location: singleLocation }); 
-	                	console.log("singleLocModels: ", singleLocModels); 
 
 	                	// Turn this array of models into a new collection: 
 	                	singleLocCollection = new EmployeesCollection(singleLocModels);
-	                	console.log(singleLocCollection); 
-
+	      
 	                	// render the new collection... 
-	                };
-                	this.render(); 
+		              	this.render(singleLocCollection.toJSON()); 
+	                } 
+
+
 				}, 
-				render: function() {
+				render: function(collectiontoJSON) {
 					var source		=	$('#collectionTemplate').html();
 					var template 	=	Handlebars.compile(source);
-					var html 		= 	template(this.collection.toJSON());
+					var html 		= 	template(collectiontoJSON);
 
 					$("#employees-render-container").html(html);
 				}
@@ -207,7 +214,7 @@
 
 			
 			// Render the Collection View:
-			allEmployeesCollectionView.render();
+			allEmployeesCollectionView.render(allEmployeesCollection.toJSON());
 
 		}); // end DOM ready fxn
 	</script>
