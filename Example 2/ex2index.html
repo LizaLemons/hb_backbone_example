@@ -244,9 +244,21 @@
         	// #15 Render the instances of the collection views
         	// allEmployeesView.render();
 
-            // Filter the collection by location
+
+
             // Toggle NYC 
-            var nycGroupResults         =   allEmployees.where({ location: "New York City" });
+
+            // #1: Simple Collection.where 
+                // var nycGroupResults      =   allEmployees.where({ location: "New York City" });
+                // console.log(nycGroupResults);
+                // => array of models 
+            
+            // #2: Collection.filter + Model.get 
+            var nycGroupResults         =   allEmployees.filter(function(employee) {
+                return employee.get("location") == "New York City";
+                // => Returns t/f for each employee & pushes them into an array if true 
+            }); 
+            
             var filteredNYC             =   new EmployeeCollection(nycGroupResults);
             var filteredNYCView         =   new collectionView({
                 collection: filteredNYC
@@ -254,6 +266,7 @@
             filteredNYCView.el = $('#filteredNYCView');
             filteredNYCView.render();
 
+            
             // Filter the collection by department
             // Toggle IT 
             var ITGroupResults          =   allEmployees.where({ department: "IT" });

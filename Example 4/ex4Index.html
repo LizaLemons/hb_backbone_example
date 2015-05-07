@@ -135,91 +135,50 @@
 				},
 				checkboxClickHandler: function(ev) { 
 
-					checked 		= 		[]; 
-					locations 		= 		[]; 
-					departments		= 		[]; 
+					var checked	= [
+						{
+							locations: [] 
+						},
+						{
+							departments: []
+						} 
+					]; 
 
-					// each over the checked buttons & push into array 
+					// each over the checked buttons  
 					$.each($("input[name='checkOptions']:checked"), function(){            
-		                checked.push($(this).attr('value'));
+		                
+		                // get the value & kind
+		                var val = $(this).attr('value');
+		                var kind = $(this).attr('kind');		                
+
+		                // push val into the correct array based on kind
+		                if (kind == "location") {
+		                	checked[0]["locations"].push(val); 
+		                } else {
+		                	checked[1]["departments"].push(val); 
+		                };
 		            });   
 
-		            console.log("Checked array:", checked);
+	            	console.log("Checked array:", checked);
 
-		            // loop through checked array; push i into location or dept array 
-		            for (var i = 0; i < checked.length; i++) {
+	            	// if only one location is checked: 
+	                if ( checked[0]["locations"].length == 1 ) { 
+	                	
+	                	// get the location name:
+	                	var singleLocation = checked[0]["locations"][0]; 
+	                	
+	                	// filter the collection for models that have this location:
+	                	var singleLocModels = this.collection.where({ location: singleLocation }); 
+	                	console.log("singleLocModels: ", singleLocModels); 
 
-		            	// if i == a location, push into location array 
-		            	if (checked[i] == "nyc" || checked[i] == "london" || checked[i] == "brussels") {
-		            		locations.push(checked[i]);
-		            	} else {
-		            		departments.push(checked[i]);
-		            	}
-		            	
-		            }; 
+	                	// Turn this array of models into a new collection: 
+	                	singleLocCollection = new EmployeesCollection(singleLocModels);
+	                	console.log(singleLocCollection); 
 
-		            if (checked.length == 1) {
-		            	var value 				= 		checked[0];
-		            	console.log("value: ", value); 
-		            	var singleValResults 	= 		this.collection.where({ location: value }) || this.collection.where({ department: value });
-		            	
-		            	console.log("singleValResults: ", singleValResults); 
-		            };
-
-
-
-/*
-
-http://stackoverflow.com/questions/17121316/how-to-pluck-multiple-attributes-from-a-backbone-collection
-
-http://tech.pro/tutorial/1519/rendering-a-filtered-backbonecollection 
-	[
-		locations: [nyc,longdon,brusslel],
-		haircolor; [blue,grey,pink]
-
-	]
-
-
-
-
-
-*/
-
-
-
-
-
-		            	// get length of location and dept arrays
-		            	// if one of one type chosen, do single Where statement 
-		            	// if one of each type chosen, do multi where statement
-		            	// if multiple from one are chosen, do filter statement
-		            	// if multiple from one are chosen and one from other type, do where > collection -> filter 
-		            	// multiple from each type, ex: show all employees in NY & London in the IT & Conferences depts
-		            		// do: 
-		            		// filter for London or NYC > new collection 
-		            		// -> where dept = IT > new collection 
-		            		// -> where dept = Accounting > new collection
-
-		            // loop through locations & departments
-		            // 1- locations = 1 
-		            
-		    //         if (locations.length == 1) {
-		    //         	var location = locations[0];
-		    //         	console.log("Location = 1", location);
-		    //         	// access the collection
-						// console.log("This:", this.collection); 
-
-		    //         } else if (departments.length == 1) {
-		    //         	var department = departments[0];
-		    //         	console.log("Department = 1", department);
-		    //         }
-
-
-
-
-
-				}, // end checkboxClickHandler fxn
-
+	                	// render the new collection... 
+	                };
+                	this.render(); 
+				}, 
 				render: function() {
 					var source		=	$('#collectionTemplate').html();
 					var template 	=	Handlebars.compile(source);
@@ -270,50 +229,50 @@ http://tech.pro/tutorial/1519/rendering-a-filtered-backbonecollection
 								<div class="col-md-6">
 									
 									<h2>Locations:</h2>
-									<div class="location-checkboxes">
+									<div class="locations">
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="New York City">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="New York City" kind="location">
 										    New York City
 										  </label>
 										</div>
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="London">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="London" kind="location">
 										    London
 										  </label>
 										</div>			
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brussels">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brussels" kind="location">
 										    Brussels
 										  </label>
 										</div>
 									</div>
 
 									<h2>Departments:</h2>
-									<div class="department-checkboxes">
+									<div class="departments">
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="IT">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="IT" kind="department">
 										    IT
 										  </label>
 										</div>			
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Accounting">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Accounting" kind="department">
 										    Accounting
 										  </label>
 										</div>
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="HR">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="HR" kind="department">
 										    HR
 										  </label>
 										</div>
 										<div class="checkbox">
 										  <label>
-										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Conferences">
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Conferences" kind="department">
 										    Conferences
 										  </label>
 										</div>
