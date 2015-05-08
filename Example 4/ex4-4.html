@@ -177,10 +177,12 @@
 						// If toggle is off, remove it
 						this.filterTracker[filterType].splice(this.filterTracker[filterType].indexOf(filter), 1);
 					}
-					// we're going to lose reference to "this" inside the filter function, need to store it here
+					// lose reference to "this" inside the filter function, need to store it here
 					var self = this;
 
 					var newFilteredCollection = new EmployeesCollection(allEmployeesCollection.toJSON());
+
+					// if no 
 					var filteredArray = newFilteredCollection.toJSON(); 
 					
 					$.each(self.filterTracker, function(kind) {
@@ -314,7 +316,7 @@
 							</div>
 						</div>
 
-						<h3>State:</h3>
+						<h3>Home State:</h3>
 						<div class="homeState">
 							<div class="checkbox">
 								<label>
