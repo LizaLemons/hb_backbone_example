@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Example 4-2</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.2/handlebars.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+	
+
+	<!-- //////////////////////////// -->
+    <!-- ////// Part 1: Define ////// -->
+    <!-- //////////////////////////// -->
+
+	<!-- Template for collection -->
+	<script id="collectionTemplate" type="text/x-handlebars-template">
+		<div>
+			<h2>{{ this.[0].collectionName }} collection:</h2>
+			<hr>
+			<ol>
+				{{#each [] }}
+				<li>{{this.name}}</li>
+				{{/each}}
+			</ol>
+		</div>
+	</script>
+
+	<script>
+
+		$(document).ready(function() {
+				
+			////////////////////////////
+			////// JSON employees //////
+			////////////////////////////
+			var allEmployeesObj = [
+				{
+					"id": 1,
+					"name": "Jack",
+					"title": "Senior Astronaut",
+					"location": "New York City",
+					"department": "IT",
+					"collectionName": "All Employees"
+				},
+				{
+					"id": 2,
+					"name": "Andres",
+					"title": "Deep Sea Diver",
+					"location": "New York City",
+					"department": "IT",
+					"collectionName": "All Employees"
+				},
+				{
+					"id": 3,
+					"name": "Chris",
+					"title": "Senior Pastry Chef",
+					"location": "London",
+					"department": "IT",
+					"collectionName": "All Employees"
+				},
+				{
+					"id": 4,
+					"name": "Liza",
+					"title": "Junior Web Developer",
+					"location": "Brussels",
+					"department": "IT",
+					"collectionName": "All Employees"
+				},
+				{
+					"id": 5,
+					"name": "Monica",
+					"title": "HR Manager",
+					"location": "London",
+					"department": "HR",
+					"collectionName": "All Employees"
+				},
+				{
+					"id": 6,
+					"name": "Erinn",
+					"title": "Senior Conference Coordinator",
+					"location": "London",
+					"department": "Conferences",
+					"collectionName": "All Employees"
+				},
+				{
+					"id": 7,
+					"name": "Kelsey",
+					"title": "Junior Conference Coordinator",
+					"location": "New York City",
+					"department": "Conferences",
+					"collectionName": "All Employees"
+				},
+				{
+					"id": 8,
+					"name": "Hussein",
+					"title": "Senior Accountant",
+					"location": "Brussels",
+					"department": "Accounting",
+					"collectionName": "All Employees"
+				}
+			];
+
+			// Define Model
+			var EmployeeModel = Backbone.Model.extend({
+
+			});
+
+			// Define Collection
+			var EmployeesCollection = Backbone.Collection.extend({
+				model: EmployeeModel
+			});
+
+			// Define View for Model
+			var modelView = Backbone.View.extend({
+				render: function() {
+					var source		=	$('#modelTemplate').html();
+					var template	= 	Handlebars.compile(source);
+					var html		= 	template(this.model.toJSON());
+					$(this.el).html(html);
+				}
+			});
+
+			// Define View for Collection
+			var collectionView = Backbone.View.extend({
+				initialize: function() {
+
+				},
+
+				events: {
+					"change .checkbox .toggle input" : "checkboxClickHandler",
+				},
+
+				filterTracker: { // persist the filterTracker always
+					locations: [],
+					departments: []
+				},
+
+				checkboxClickHandler: function(ev) {
+					// get these two from the input that was clicked
+					var filterType = ev.target.getAttribute('kind');
+					var filter = ev.target.value;
+
+					if (ev.target.checked) {
+						// switch is on, add it
+						this.filterTracker[filterType].push(filter);
+					} else {
+						// switch is off, remove it
+						this.filterTracker[filterType].splice(this.filterTracker[filterType].indexOf(filter), 1);
+					}
+					// we're going to lose reference to "this" inside the filter function, need to store it here
+					var self = this;
+
+					//TODO: Loop through all filterTypes, see which ones are on, only have one predicate to pass to filter
+
+					// var predicate = somethingEmpty;
+
+					// for each filterType {
+					// 	if filtertype is on
+					// 		add to predicate
+					// 	end
+
+					// 	return predicate
+					// }
+
+					if (self.filterTracker.locations.length > 0 || self.filterTracker.departments.length > 0) {
+
+						var filteredArray = allEmployeesCollection.filter(function(employee){
+							
+							// if at least 1 of locations is checked & none of depts 
+							if ( self.filterTracker.locations.length > 0 && self.filterTracker.departments.length === 0 ) {
+								// if the employee's location is in the locations array 
+								return self.filterTracker.locations.indexOf(employee.get('location')) !== -1;
+
+							// if at least 1 of departments is checked & none of locations 	
+						   } else if (self.filterTracker.departments.length > 0 && self.filterTracker.locations.length === 0 ) { 
+						   		return self.filterTracker.departments.indexOf(employee.get('department')) !== -1;
+
+						   	// if at least 1 from both types is checked 
+						   } else {
+								return self.filterTracker.locations.indexOf(employee.get('location')) !== -1 &&
+									   self.filterTracker.departments.indexOf(employee.get('department')) !== -1;
+						   }
+
+						});
+						// The filtered collection 
+						this.collection = new EmployeesCollection(filteredArray);
+					} else {
+						// we don't have filters on, reset
+						this.collection = allEmployeesCollection;
+					}
+
+                	this.render();
+				}, 
+
+				render: function() {
+					var source		=	$('#collectionTemplate').html();
+					var template 	=	Handlebars.compile(source);
+					var html 		= 	template(this.collection.toJSON());
+
+					$("#employees-render-container").html(html);
+				}
+			}); // end collectionView 
+
+
+			////////////////////////////
+			////// Part 2: Create //////
+			////////////////////////////
+
+			// Make sure it's really a JSON string:
+			var allEmployeesJSON = JSON.stringify(allEmployeesObj);
+			// Parse the JSON string:
+			var employees = JSON.parse(allEmployeesJSON);
+			// Pass to a newly instantiated Collection:
+			var allEmployeesCollection = new EmployeesCollection(employees);
+			// Create an instance of a View for this new Collection:
+			var allEmployeesCollectionView = new collectionView({
+				collection: allEmployeesCollection,
+				el: '#allEmployeesContainer'
+			});
+
+			
+			// Render the Collection View:
+			allEmployeesCollectionView.render();
+
+		}); // end DOM ready fxn
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="container-fluid">
+			
+		</div>
+		<div class="container-fluid">
+			<div class="row">
+				<div id="collectionsContainer">
+					<div id="allEmployeesContainer">
+						
+
+						<!-- Toggles: -->
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-6">
+									
+									<h2>Locations:</h2>
+									<div class="locations">
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="New York City" kind="locations">
+										    New York City
+										  </label>
+										</div>
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="London" kind="locations">
+										    London
+										  </label>
+										</div>			
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brussels" kind="locations">
+										    Brussels
+										  </label>
+										</div>
+									</div>
+
+									<h2>Departments:</h2>
+									<div class="departments">
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="IT" kind="departments">
+										    IT
+										  </label>
+										</div>			
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Accounting" kind="departments">
+										    Accounting
+										  </label>
+										</div>
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="HR" kind="departments">
+										    HR
+										  </label>
+										</div>
+										<div class="checkbox">
+										  <label>
+										    <input name="checkOptions" type="checkbox" data-toggle="toggle" value="Conferences" kind="departments">
+										    Conferences
+										  </label>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div><!-- End Toggles -->	
+
+
+						<!-- Render employees here -->
+						<div id="employees-render-container"></div>
+
+
+					</div>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
