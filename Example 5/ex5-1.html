@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Example 4-3</title>
+	<title>Example 5-1</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -41,19 +41,18 @@
 
 		$(document).ready(function() {
 				
-			////////////////////////////
+
 			////// JSON employees //////
-			////////////////////////////
 			var allEmployeesObj = [
 				{
-					"id": 1,
-					"name": "Jack",
+					"id": 1, 
+					"name": "Jack",  
 					"title": "Senior Astronaut",
-					"location": "New York City",
-					"department": "IT",
+					"location": "New York City", 
+					"department": "IT", 
 					"collectionName": "All Employees",
-					"eyeColor" : "Blue",
-					"homeState": "NY"
+					"eyeColor" : "Blue", 
+					"homeState": "NY" 
 				},
 				{
 					"id": 2,
@@ -127,110 +126,57 @@
 				}
 			];
 
-			// Define Model
-			var EmployeeModel = Backbone.Model.extend({
-
-			});
-
-			// Define Collection
-			var EmployeesCollection = Backbone.Collection.extend({
-				model: EmployeeModel
-			});
-
-			// Define View for Model
-			var modelView = Backbone.View.extend({
-				render: function() {
-					var source		=	$('#modelTemplate').html();
-					var template	= 	Handlebars.compile(source);
-					var html		= 	template(this.model.toJSON());
-					$(this.el).html(html);
-				}
-			});
-
-			// Define View for Collection
-			var collectionView = Backbone.View.extend({
-				initialize: function() {
-
-				},
-
-				events: {
-					"change .checkbox .toggle input" : "checkboxClickHandler",
-				},
-
-				// Put here to persist the filterTracker always instead of creating it every time button toggled
- 				filterTracker: { 
-					location: [],
-					department: [],
-					eyeColor: [], 
-					homeState: []
-				},
-
-				checkboxClickHandler: function(ev) {
-					// get these two from the input that was clicked
-					var filterType = ev.target.getAttribute('kind');
-					var filter = ev.target.value;
-
-					if (ev.target.checked) {
-						// If something toggled, add it
-						this.filterTracker[filterType].push(filter);
-					} else {
-						// If toggle is off, remove it
-						this.filterTracker[filterType].splice(this.filterTracker[filterType].indexOf(filter), 1);
-					}
-
-					// lose reference to "this" inside the filter function, need to store it here
-					var self = this;
-
-					// start with a fresh collection that includes all employees (the allEmployeeCollection) in JSON 
-					var newFilteredCollection = new EmployeesCollection(allEmployeesCollection.toJSON());
-
-					// This is the default: if no buttons toggled, filteredArray =  
-					var filteredArray = newFilteredCollection.toJSON(); 
-					
-					$.each(self.filterTracker, function(kind) {
-						if ( self.filterTracker[kind].length > 0 ) {
-							filteredArray = newFilteredCollection.filter(function(employee){
-								return self.filterTracker[kind].indexOf(employee.get(kind)) !== -1;
-							});		
-							newFilteredCollection = new EmployeesCollection(filteredArray); 
-						} 
-					});
-
-					// Set the view's collection as a new EmployeesCollection whose models are the filtered models from the original collection  
-					this.collection = newFilteredCollection;
-
-                	this.render();
-				}, 
-
-				render: function() {
-					var source		=	$('#collectionTemplate').html();
-					var template 	=	Handlebars.compile(source);
-					var html 		= 	template(this.collection.toJSON());
-
-					$("#employees-render-container").html(html);
-				}
-			}); // end collectionView 
-
-
 			////////////////////////////
-			////// Part 2: Create //////
-			////////////////////////////
+			/////// Dyn. Filters //////
+			//////////////////////////
 
-			// Make sure it's really a JSON string:
-			var allEmployeesJSON = JSON.stringify(allEmployeesObj);
-			// Parse the JSON string:
-			var employees = JSON.parse(allEmployeesJSON);
-			// Pass to a newly instantiated Collection:
-			var allEmployeesCollection = new EmployeesCollection(employees);
-			// Create an instance of a View for this new Collection:
-			var allEmployeesCollectionView = new collectionView({
-				collection: allEmployeesCollection,
-				el: '#allEmployeesContainer'
+			// To capitalize the h3's: 
+			function capitalizeFirstLetter(string) {
+				return string.charAt(0).toUpperCase() + string.slice(1);
+			}
+
+			// 
+
+
+
+
+
+
+			for ( var key in allEmployeesObj[0] ) {
+				// turn each key into an h3
+				var capitalized = capitalizeFirstLetter(key);
+				$("#rendered-toggles").append("<h3>" + capitalized + "</h3>");
+
+				// get all possible values for a key
+				// 
+
+
+			};
+
+
+			var keys = [];
+
+			for ( var key in allEmployeesObj[0] ) {
+				// keys.push(key);
+				var capitalized = capitalizeFirstLetter(key);
+				$("#rendered-toggles").append("<h3>" + capitalized + "</h3>");
+
+
+			};
+
+			console.log("Keys array:", keys);
+
+			// Iterate over keys; For each key, create an h3 and insert into end of #rendered-toggles div
+			$.each(keys, function(index, value) {
+				console.log("index: ", index, "value: ", value); 
+				var capitalized = capitalizeFirstLetter(value);
+				$("#rendered-toggles").append("<h3>" + capitalized + "</h3>");
 			});
 
-			
-			// Render the Collection View:
-			allEmployeesCollectionView.render();
+
+
+
+
 
 		}); // end DOM ready fxn
 	</script>
@@ -343,17 +289,16 @@
 									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="VT" kind="homeState">
 									Vermont 
 								</label>
-							</div
->						</div>
-					</div>
-					<!-- End Toggles -->	
-
-					<!-- Render employees here -->
-					<div class="col-md-6" id="employees">
-						<div id="employees-render-container">
+							</div>						
 						</div>
-					</div>
-					<!-- End employees list --> 
+					</div> <!-- End Toggles -->	
+
+					<!-- Rendered Toggles: -->
+					<div class="col-md-6" id="rendered-toggles">
+						<h2>Rendered Filters:</h2>
+						<hr>
+						<!-- ////////////////// -->
+					</div> 
 
 				</div>
 				<br>
