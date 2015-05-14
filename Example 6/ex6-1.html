@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<!-- Dynamically render selected filters/toggles with jQuery ++ Backbone employees -->
+
+
+	<meta charset="UTF-8">
+	<title>Example 6-1</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.2/handlebars.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    	
+
+	<!-- //////////////////////////// -->
+    <!-- ////// Part 1: Define ////// -->
+    <!-- //////////////////////////// -->
+
+	<!-- Template for collection -->
+	<script id="collectionTemplate" type="text/x-handlebars-template">
+		<div>
+			<h2>{{ this.[0].collectionName }} collection:</h2>
+			<hr>
+			<ol>
+				{{#each [] }}
+				<li><b>{{this.name}}</b></li>
+					<ul>
+						<li>Location: {{this.location}}</li>
+						<li>Department: {{this.department}}</li>
+						<li>Eye color: {{this.eyeColor}}</li>
+						<li>Home state: {{this.homeState}}</li>
+					</ul>
+				{{/each}}
+			</ol>
+		</div>
+	</script>
+
+	<script>
+
+		$(document).ready(function() {
+				
+			////////////////////////////
+			////// JSON employees //////
+			////////////////////////////
+			var allEmployeesObj = [
+				{
+					"id": 1,
+					"name": "Jack",
+					"title": "Senior Astronaut",
+					"location": "New York City",
+					"department": "IT",
+					"collectionName": "All Employees",
+					"eyeColor" : "Blue",
+					"homeState": "NY"
+				},
+				{
+					"id": 2,
+					"name": "Andres",
+					"title": "Deep Sea Diver",
+					"location": "New York City",
+					"department": "IT",
+					"collectionName": "All Employees", 
+					"eyeColor" : "Brown",
+					"homeState": "NJ"
+				},
+				{
+					"id": 3,
+					"name": "Chris",
+					"title": "Senior Pastry Chef",
+					"location": "London",
+					"department": "IT",
+					"collectionName": "All Employees",
+					"eyeColor" : "Green",
+					"homeState": "NY"
+				},
+				{
+					"id": 4,
+					"name": "Liza",
+					"title": "Junior Web Developer",
+					"location": "Brussels",
+					"department": "IT",
+					"collectionName": "All Employees",
+					"eyeColor" : "Brown",
+					"homeState": "NY"
+				},
+				{
+					"id": 5,
+					"name": "Monica",
+					"title": "HR Manager",
+					"location": "London",
+					"department": "HR",
+					"collectionName": "All Employees",
+					"eyeColor" : "Brown",
+					"homeState": "NJ"
+				},
+				{
+					"id": 6,
+					"name": "Erinn",
+					"title": "Senior Conference Coordinator",
+					"location": "London",
+					"department": "Conferences",
+					"collectionName": "All Employees",
+					"eyeColor" : "Green",
+					"homeState": "NJ"
+				},
+				{
+					"id": 7,
+					"name": "Kelsey",
+					"title": "Junior Conference Coordinator",
+					"location": "New York City",
+					"department": "Conferences",
+					"collectionName": "All Employees",
+					"eyeColor" : "Green",
+					"homeState": "CT"
+				},
+				{
+					"id": 8,
+					"name": "Hussein",
+					"title": "Senior Accountant",
+					"location": "Brussels",
+					"department": "Accounting",
+					"collectionName": "All Employees",
+					"eyeColor" : "Brown",
+					"homeState": "VT"
+				}
+			];
+
+
+
+			// To capitalize the h3's: 
+			function capitalizeFirstLetter(string) {
+				return string.charAt(0).toUpperCase() + string.slice(1);
+			}
+
+			var keyValsObj = {}; 
+
+			$.each( allEmployeesObj, function( index, obj ){ 
+				// loops over keys:   
+				for( var key in obj) {
+					// values of keys in allEmployeesObj
+					var val = obj[key]; 
+					// values in arrays in keyValsObj
+					var newValue = keyValsObj[key]
+					
+					// check if keyValsObj doesn't already have the key && if key = department, location, eye color or home state; if so, add it as a key to keyValsObj w/a value of an empty array 
+					if ( !keyValsObj.hasOwnProperty(key) ) {
+					// if ( (!keyValsObj.hasOwnProperty(key)) && ( key == "department" ) ) {
+						keyValsObj[key] = [];  
+					};
+
+					// check if val in allEmployeesObj is in arrays in keyValsObj
+					if ( keyValsObj[key].indexOf(val) == -1 ) {
+						keyValsObj[key].push(val);
+					}; 
+				}				
+			}); 
+
+			console.log("keyValsObj: ", keyValsObj); 
+
+			/* 
+				var keyValsObj = {
+					location: ["New York City", "London", "Brussels"], 
+					department: ["IT", "Accounting", "HR", "onferences"],
+					eyeColor: ["Blue", "Brown", "Green"]
+				}
+			*/
+
+			////////////////////////////////////////////////
+			///Choose which filters to display here ///////
+			//////////////////////////////////////////////
+
+			// Loop over keyValsObj and create H3s and toggles
+			$.each( keyValsObj, function(key1, val1){
+				// create div with class of key and append to #rendered-toggles
+				console.log("key1: ", key1); 
+				if ( key1 == "location" || key1 == "department" || key1 == "eyeColor" || key1 == "homeState" ) {
+					var filterDiv = $("<div class=" + key1 + ">"); 
+					$("#rendered-toggles").append(filterDiv); 
+
+					// capitalize & append H3s
+					var capitalized = capitalizeFirstLetter(key1);
+					$(filterDiv).append("<h3>" + capitalized + "</h3>");
+					
+					// loop through values 
+					for (var i = 0; i < keyValsObj[key1].length; i++) {
+						var individualVal = keyValsObj[key1][i]
+						var toggle = $("<div class='checkbox'><label><input name='checkOptions' type='checkbox' data-toggle='toggle' value=" + individualVal + " kind=" + key1 + ">" + individualVal + " </label></div>"); 
+						$(filterDiv).append(toggle);
+					};	
+				};
+			});
+
+			// Define Model
+			var EmployeeModel = Backbone.Model.extend({
+
+			});
+
+			// Define Collection
+			var EmployeesCollection = Backbone.Collection.extend({
+				model: EmployeeModel
+			});
+
+			// Define View for Model
+			var modelView = Backbone.View.extend({
+				render: function() {
+					var source		=	$('#modelTemplate').html();
+					var template	= 	Handlebars.compile(source);
+					var html		= 	template(this.model.toJSON());
+					$(this.el).html(html);
+				}
+			});
+
+			// Define View for Collection
+			var collectionView = Backbone.View.extend({
+				initialize: function() {
+
+				},
+
+				events: {
+					"change .checkbox .toggle input" : "checkboxClickHandler",
+				},
+
+				// Put here to persist the filterTracker always instead of creating it every time button toggled
+ 				filterTracker: { 
+					location: [],
+					department: [],
+					eyeColor: [], 
+					homeState: []
+				},
+
+				checkboxClickHandler: function(ev) {
+					// get these two from the input that was clicked
+					var filterType = ev.target.getAttribute('kind');
+					var filter = ev.target.value;
+
+					if (ev.target.checked) {
+						// If something toggled, add it
+						this.filterTracker[filterType].push(filter);
+					} else {
+						// If toggle is off, remove it
+						this.filterTracker[filterType].splice(this.filterTracker[filterType].indexOf(filter), 1);
+					}
+
+					// lose reference to "this" inside the filter function, need to store it here
+					var self = this;
+
+					// start with a fresh collection that includes all employees (the allEmployeeCollection) in JSON 
+					var newFilteredCollection = new EmployeesCollection(allEmployeesCollection.toJSON());
+
+					// This is the default: if no buttons toggled, filteredArray =  
+					var filteredArray = newFilteredCollection.toJSON(); 
+					
+					$.each(self.filterTracker, function(kind) {
+						if ( self.filterTracker[kind].length > 0 ) {
+							filteredArray = newFilteredCollection.filter(function(employee){
+								return self.filterTracker[kind].indexOf(employee.get(kind)) !== -1;
+							});		
+							newFilteredCollection = new EmployeesCollection(filteredArray); 
+						} 
+					});
+
+					// Set the view's collection as a new EmployeesCollection whose models are the filtered models from the original collection  
+					this.collection = newFilteredCollection;
+
+                	this.render();
+				}, 
+
+				render: function() {
+					var source		=	$('#collectionTemplate').html();
+					var template 	=	Handlebars.compile(source);
+					var html 		= 	template(this.collection.toJSON());
+
+					$("#employees-render-container").html(html);
+				}
+			}); // end collectionView 
+
+
+			////////////////////////////
+			////// Part 2: Create //////
+			////////////////////////////
+
+			// Make sure it's really a JSON string:
+			var allEmployeesJSON = JSON.stringify(allEmployeesObj);
+			// Parse the JSON string:
+			var employees = JSON.parse(allEmployeesJSON);
+			// Pass to a newly instantiated Collection:
+			var allEmployeesCollection = new EmployeesCollection(employees);
+			// Create an instance of a View for this new Collection:
+			var allEmployeesCollectionView = new collectionView({
+				collection: allEmployeesCollection,
+				el: '#allEmployeesContainer'
+			});
+
+			
+			// Render the Collection View:
+			allEmployeesCollectionView.render();
+
+		}); // end DOM ready fxn
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="container-fluid">
+			<div id="allEmployeesContainer">
+
+				<div class="row">
+					<!-- Toggles: -->
+<!-- 					<div class="col-md-6" id="toggles">
+						<h2>Filters:</h2>
+						<hr>
+
+						<div class="location">
+							<h3>Location:</h3>
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="New York City" kind="location">
+									New York City
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="London" kind="location">
+									London
+								</label>
+							</div>			
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brussels" kind="location">
+									Brussels
+								</label>
+							</div>
+						</div>
+
+						<div class="department">
+							<h3>Department:</h3>
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="IT" kind="department">
+									IT
+								</label>
+							</div>			
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Accounting" kind="department">
+									Accounting
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="HR" kind="department">
+									HR
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Conferences" kind="department">
+									Conferences
+								</label>
+							</div>
+						</div>									
+
+						<div class="eyeColor">
+							<h3>Eye Color:</h3>
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Green" kind="eyeColor">
+									Green
+								</label>
+							</div>			
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brown" kind="eyeColor">
+									Brown
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Blue" kind="eyeColor">
+									Blue
+								</label>
+							</div>
+						</div>
+
+						<div class="homeState">
+							<h3>Home State:</h3>
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="NY" kind="homeState">
+									New York
+								</label>
+							</div>			
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="NJ" kind="homeState">
+									New Jersey
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="CT" kind="homeState">
+									CT
+								</label>
+							</div>						
+							<div class="checkbox">
+								<label>
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="VT" kind="homeState">
+									Vermont 
+								</label>
+							</div
+>						</div>
+					</div> -->
+
+					<!-- Rendered toggles here -->
+					<div class="col-md-6" id="rendered-toggles">
+						<h2>Rendered Filters:</h2>
+						<hr>
+
+						<!-- ////////////////// -->
+
+
+					</div>
+
+
+
+					<!-- End Toggles -->	
+
+					<!-- Render employees here -->
+					<div class="col-md-6" id="employees">
+						<div id="employees-render-container">
+						</div>
+					</div>
+					<!-- End employees list --> 
+
+				</div>
+				<br>
+			</div>
+		</div>
+	</div>
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+</body>
+</html>

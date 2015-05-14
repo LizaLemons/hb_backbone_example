@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<!-- Dynamically render SELECTED filters and toggles using jQuery -->
+
+	<meta charset="UTF-8">
+	<title>Example 5-2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	
+	<script>
+
+		$(document).ready(function() {		
+
+			////// JSON employees ////
+			var allEmployeesArr = [
+				{
+					"id": 1, 
+					"name": "Jack",  
+					"title": "Senior Astronaut",
+					"location": "New York City", 
+					"department": "IT", 
+					"collectionName": "All Employees",
+					"eyeColor" : "Blue", 
+					"homeState": "NY" 
+				},
+				{
+					"id": 2,
+					"name": "Andres",
+					"title": "Deep Sea Diver",
+					"location": "New York City",
+					"department": "IT",
+					"collectionName": "All Employees", 
+					"eyeColor" : "Brown",
+					"homeState": "NJ"
+				},
+				{
+					"id": 3,
+					"name": "Chris",
+					"title": "Senior Pastry Chef",
+					"location": "London",
+					"department": "IT",
+					"collectionName": "All Employees",
+					"eyeColor" : "Green",
+					"homeState": "NY"
+				},
+				{
+					"id": 4,
+					"name": "Liza",
+					"title": "Junior Web Developer",
+					"location": "Brussels",
+					"department": "IT",
+					"collectionName": "All Employees",
+					"eyeColor" : "Brown",
+					"homeState": "NY"
+				},
+				{
+					"id": 5,
+					"name": "Monica",
+					"title": "HR Manager",
+					"location": "London",
+					"department": "HR",
+					"collectionName": "All Employees",
+					"eyeColor" : "Brown",
+					"homeState": "NJ"
+				},
+				{
+					"id": 6,
+					"name": "Erinn",
+					"title": "Senior Conference Coordinator",
+					"location": "London",
+					"department": "Conferences",
+					"collectionName": "All Employees",
+					"eyeColor" : "Green",
+					"homeState": "NJ"
+				},
+				{
+					"id": 7,
+					"name": "Kelsey",
+					"title": "Junior Conference Coordinator",
+					"location": "New York City",
+					"department": "Conferences",
+					"collectionName": "All Employees",
+					"eyeColor" : "Green",
+					"homeState": "CT"
+				},
+				{
+					"id": 8,
+					"name": "Hussein",
+					"title": "Senior Accountant",
+					"location": "Brussels",
+					"department": "Accounting",
+					"collectionName": "All Employees",
+					"eyeColor" : "Brown",
+					"homeState": "VT"
+				}
+			];
+
+			////////////////////////////
+			/////// Dyn. Filters //////
+			//////////////////////////
+
+			/* 
+				- Array < objects < keys < values
+				- var keyValsObj = {};
+				- Loop over keys; 
+					- if key not in keyValsObj, add it as a new key whose value is an empty array 
+					- while looping over the key, get the value and add it to the correct array ...? 
+			*/
+
+
+			// To capitalize the h3's: 
+			function capitalizeFirstLetter(string) {
+				return string.charAt(0).toUpperCase() + string.slice(1);
+			}
+
+			var keyValsObj = {}; 
+
+			$.each( allEmployeesArr, function( index, obj ){ 
+				// loops over keys:   
+				for( var key in obj) {
+					// values of keys in allEmployeesArr
+					var val = obj[key]; 
+					// values in arrays in keyValsObj
+					var newValue = keyValsObj[key]
+					
+					// check if keyValsObj doesn't already have the key && if key = department, location, eye color or home state; if so, add it as a key to keyValsObj w/a value of an empty array 
+					if ( !keyValsObj.hasOwnProperty(key) ) {
+					// if ( (!keyValsObj.hasOwnProperty(key)) && ( key == "department" ) ) {
+						keyValsObj[key] = [];  
+					};
+
+					// check if val in allEmployeesArr is in arrays in keyValsObj
+					if ( keyValsObj[key].indexOf(val) == -1 ) {
+						keyValsObj[key].push(val);
+					}; 
+				}				
+			}); 
+
+			console.log("keyValsObj: ", keyValsObj); 
+
+			/* 
+				var keyValsObj = {
+					location: ["New York City", "London", "Brussels"], 
+					department: ["IT", "Accounting", "HR", "onferences"],
+					eyeColor: ["Blue", "Brown", "Green"]
+				}
+			*/
+
+			////////////////////////////////////////////////
+			///Choose which filters to display here ///////
+			//////////////////////////////////////////////
+
+			// Loop over keyValsObj and create H3s and toggles
+			$.each( keyValsObj, function(key1, val1){
+				// create div with class of key and append to #rendered-toggles
+				console.log("key1: ", key1); 
+				if ( key1 == "location" || key1 == "department" || key1 == "eyeColor" || key1 == "homeState" ) {
+					var filterDiv = $("<div class=" + key1 + ">"); 
+					$("#rendered-toggles").append(filterDiv); 
+
+					// capitalize & append H3s
+					var capitalized = capitalizeFirstLetter(key1);
+					$(filterDiv).append("<h3>" + capitalized + "</h3>");
+					
+					// loop through values 
+					for (var i = 0; i < keyValsObj[key1].length; i++) {
+						var individualVal = keyValsObj[key1][i]
+						var toggle = $("<div class='checkbox'><label><input name='checkOptions' type='checkbox' data-toggle='toggle' value=" + individualVal + " kind=" + key1 + ">" + individualVal + " </label></div>"); 
+						$(filterDiv).append(toggle);
+					};	
+				};
+			});
+
+		}); // end DOM ready fxn
+
+
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="container-fluid">
+			<div id="allEmployeesContainer">
+
+				<div class="row">
+					<!-- Toggles were here -->
+					<!-- Rendered Toggles: -->
+					<div class="col-md-6" id="rendered-toggles">
+						<h2>Rendered Filters:</h2>
+						<hr>
+
+						<!-- ////////////////// -->
+
+
+					</div> 
+
+				</div>
+				<br>
+			</div>
+		</div>
+	</div>
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+</body>
+</html>
