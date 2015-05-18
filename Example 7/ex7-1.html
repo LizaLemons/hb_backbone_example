@@ -3,6 +3,7 @@
 <head>
 	
 	<!-- Dynamically render selected filters/toggles with jQuery ++ Backbone employees -->
+	<!-- Change format of JSON object; change properties to match what's in WP -->
 
 
 	<meta charset="UTF-8">
@@ -47,88 +48,109 @@
 			////////////////////////////
 			////// JSON employees //////
 			////////////////////////////
-			var allEmployeesObj = [
+			
+
+			var employeeList = {"employees": [
 				{
-					"id": 1,
-					"name": "Jack",
-					"title": "Senior Astronaut",
-					"location": "New_York_City",
-					"department": "IT",
-					"collectionName": "All Employees",
-					"eyeColor" : "Blue",
-					"homeState": "NY"
-				},
-				{
-					"id": 2,
-					"name": "Andres",
-					"title": "Deep Sea Diver",
-					"location": "New_York_City",
-					"department": "IT",
-					"collectionName": "All Employees", 
-					"eyeColor" : "Brown",
-					"homeState": "NJ"
-				},
-				{
-					"id": 3,
-					"name": "Chris",
-					"title": "Senior Pastry Chef",
-					"location": "London",
-					"department": "IT",
-					"collectionName": "All Employees",
-					"eyeColor" : "Green",
-					"homeState": "NY"
-				},
-				{
-					"id": 4,
-					"name": "Liza",
-					"title": "Junior Web Developer",
-					"location": "Brussels",
-					"department": "IT",
-					"collectionName": "All Employees",
-					"eyeColor" : "Brown",
-					"homeState": "NY"
-				},
-				{
-					"id": 5,
-					"name": "Monica",
-					"title": "HR Manager",
-					"location": "London",
-					"department": "HR",
-					"collectionName": "All Employees",
-					"eyeColor" : "Brown",
-					"homeState": "NJ"
-				},
-				{
-					"id": 6,
-					"name": "Erinn",
-					"title": "Senior Conference Coordinator",
-					"location": "London",
-					"department": "Conferences",
-					"collectionName": "All Employees",
-					"eyeColor" : "Green",
-					"homeState": "NJ"
-				},
-				{
-					"id": 7,
-					"name": "Kelsey",
-					"title": "Junior Conference Coordinator",
-					"location": "New_York_City",
-					"department": "Conferences",
-					"collectionName": "All Employees",
-					"eyeColor" : "Green",
-					"homeState": "CT"
-				},
-				{
-					"id": 8,
-					"name": "Hussein",
-					"title": "Senior Accountant",
-					"location": "Brussels",
-					"department": "Accounting",
-					"collectionName": "All Employees",
-					"eyeColor" : "Brown",
-					"homeState": "VT"
-				}
-			];
+					"employeeName"		: "Andres Escobar",
+					"employeeImg" 		: "xyz",
+					"employeeLocation"	: "New York",
+					"employeeTitle"		: "Web Developer",
+					"employeeEmail"		: "aescobar@isda.org"
+					},
+					{
+					"employeeName"		: "Andres Escobar",
+					"employeeImg" 		: "xyz",
+					"employeeLocation"	: "New York",
+					"employeeTitle"		: "Web Developer",
+					"employeeEmail"		: "aescobar@isda.org"
+					}
+			]};
+
+
+
+			// var allEmployeesObj = [
+			// 	{
+			// 		"id": 1,
+			// 		"name": "Jack",
+			// 		"title": "Senior Astronaut",
+			// 		"location": "New_York_City",
+			// 		"department": "IT",
+			// 		"collectionName": "All Employees",
+			// 		"eyeColor" : "Blue",
+			// 		"homeState": "NY"
+			// 	},
+			// 	{
+			// 		"id": 2,
+			// 		"name": "Andres",
+			// 		"title": "Deep Sea Diver",
+			// 		"location": "New_York_City",
+			// 		"department": "IT",
+			// 		"collectionName": "All Employees", 
+			// 		"eyeColor" : "Brown",
+			// 		"homeState": "NJ"
+			// 	},
+			// 	{
+			// 		"id": 3,
+			// 		"name": "Chris",
+			// 		"title": "Senior Pastry Chef",
+			// 		"location": "London",
+			// 		"department": "IT",
+			// 		"collectionName": "All Employees",
+			// 		"eyeColor" : "Green",
+			// 		"homeState": "NY"
+			// 	},
+			// 	{
+			// 		"id": 4,
+			// 		"name": "Liza",
+			// 		"title": "Junior Web Developer",
+			// 		"location": "Brussels",
+			// 		"department": "IT",
+			// 		"collectionName": "All Employees",
+			// 		"eyeColor" : "Brown",
+			// 		"homeState": "NY"
+			// 	},
+			// 	{
+			// 		"id": 5,
+			// 		"name": "Monica",
+			// 		"title": "HR Manager",
+			// 		"location": "London",
+			// 		"department": "HR",
+			// 		"collectionName": "All Employees",
+			// 		"eyeColor" : "Brown",
+			// 		"homeState": "NJ"
+			// 	},
+			// 	{
+			// 		"id": 6,
+			// 		"name": "Erinn",
+			// 		"title": "Senior Conference Coordinator",
+			// 		"location": "London",
+			// 		"department": "Conferences",
+			// 		"collectionName": "All Employees",
+			// 		"eyeColor" : "Green",
+			// 		"homeState": "NJ"
+			// 	},
+			// 	{
+			// 		"id": 7,
+			// 		"name": "Kelsey",
+			// 		"title": "Junior Conference Coordinator",
+			// 		"location": "New_York_City",
+			// 		"department": "Conferences",
+			// 		"collectionName": "All Employees",
+			// 		"eyeColor" : "Green",
+			// 		"homeState": "CT"
+			// 	},
+			// 	{
+			// 		"id": 8,
+			// 		"name": "Hussein",
+			// 		"title": "Senior Accountant",
+			// 		"location": "Brussels",
+			// 		"department": "Accounting",
+			// 		"collectionName": "All Employees",
+			// 		"eyeColor" : "Brown",
+			// 		"homeState": "VT"
+			// 	}
+			// ];
 
 
 
@@ -312,124 +334,13 @@
 			<div id="allEmployeesContainer">
 
 				<div class="row">
-					<!-- Toggles: -->
-<!-- 					<div class="col-md-6" id="toggles">
-						<h2>Filters:</h2>
-						<hr>
 
-						<div class="location">
-							<h3>Location:</h3>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="New York City" kind="location">
-									New York City
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="London" kind="location">
-									London
-								</label>
-							</div>			
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brussels" kind="location">
-									Brussels
-								</label>
-							</div>
-						</div>
-
-						<div class="department">
-							<h3>Department:</h3>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="IT" kind="department">
-									IT
-								</label>
-							</div>			
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Accounting" kind="department">
-									Accounting
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="HR" kind="department">
-									HR
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Conferences" kind="department">
-									Conferences
-								</label>
-							</div>
-						</div>									
-
-						<div class="eyeColor">
-							<h3>Eye Color:</h3>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Green" kind="eyeColor">
-									Green
-								</label>
-							</div>			
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brown" kind="eyeColor">
-									Brown
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Blue" kind="eyeColor">
-									Blue
-								</label>
-							</div>
-						</div>
-
-						<div class="homeState">
-							<h3>Home State:</h3>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="NY" kind="homeState">
-									New York
-								</label>
-							</div>			
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="NJ" kind="homeState">
-									New Jersey
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="CT" kind="homeState">
-									CT
-								</label>
-							</div>						
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="VT" kind="homeState">
-									Vermont 
-								</label>
-							</div
->						</div>
-					</div> -->
-
-					<!-- Rendered toggles here -->
+					<!-- Rendered toggles -->
 					<div class="col-md-6" id="rendered-toggles">
 						<h2>Rendered Filters:</h2>
 						<hr>
-
-						<!-- ////////////////// -->
-
-
+						<!-- //////// Render toggles here ////////// -->
 					</div>
-
-
-
 					<!-- End Toggles -->	
 
 					<!-- Render employees here -->
