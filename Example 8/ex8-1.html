@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<!-- THIS ONE WORKS PERFECTLY -->
+	<!-- Dynamically render selected filters/toggles with jQuery ++ Backbone employees -->
+
+
+	<meta charset="UTF-8">
+	<title>Example 8-1</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.2/handlebars.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    	
+
+	<!-- //////////////////////////// -->
+    <!-- ////// Part 1: Define ////// -->
+    <!-- //////////////////////////// -->
+
+	<!-- Template for collection -->
+	<script id="collectionTemplate" type="text/x-handlebars-template">
+		<div>
+			<h2>{{ this.[0].collectionName }} collection:</h2>
+			<hr>
+			<ol>
+				{{#each [] }}
+				<li><b>{{this.name}}</b></li>
+					<ul>
+						<li>Location: {{this.employeeLocation}}</li>
+						<li>Department: {{this.department}}</li>
+						<li>Eye color: {{this.eyeColor}}</li>
+						<li>Home state: {{this.homeState}}</li>
+					</ul>
+				{{/each}}
+			</ol>
+		</div>
+	</script>
+
+	<script>
+
+		$(document).ready(function() {
+				
+			////////////////////////////
+			////// JSON employees //////
+			////////////////////////////
+			
+			// WP PHP --> JSON --> Result: 
+			var employeeList = {"employees": [
+				{
+					"employeeName":"Andres Escobar",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Web Developer ",
+					"employeeDate":"January 21, 2014",
+					"employeeDept":["Information Technology"],
+					"employeeEmail":"aescobar@isda.org",
+					"employeePhone":"+1 (212) 901-6038",
+					"employeePhoneExt":"6038",
+					"employeeHierarchy":"Office of the CEO"
+				},
+				{
+					"employeeName":"Andrew Scheck",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Network Systems Engineer",
+					"employeeDate":"October 01, 2014",
+					"employeeDept":["Information Technology"],
+					"employeeEmail":"ascheck@isda.org",
+					"employeePhone":"+1 (212) 901-6059",
+					"employeePhoneExt":"6059",
+					"employeeHierarchy":"Neither"
+				},
+				{
+					"employeeName":"Bella Rozenberg",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Assistant General Counsel\/Head of Regulatory and Legal Practice Group",
+					"employeeDate":"November 10, 2014",
+					"employeeDept":["Legal"],
+					"employeeEmail":"brozenberg@isda.org",
+					"employeePhone":"(202) 756-1972",
+					"employeePhoneExt":"1972",
+					"employeeHierarchy":"Neither"
+				},
+				{
+					"employeeName":"Christian Skala",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Senior Web Developer",
+					"employeeDate":"November 01, 2013",
+					"employeeDept":["Information Technology"],
+					"employeeEmail":"cskala@isda.org",
+					"employeePhone":"(212) 901-6011",
+					"employeePhoneExt":"6011",
+					"employeeHierarchy":"Neither"
+				},
+				{
+					"employeeName":"David Geen",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"London",
+					"employeeTitle":"General Counsel",
+					"employeeDate":"November 01, 2006",
+					"employeeDept":["Legal"],
+					"employeeEmail":"dgeen@isda.org",
+					"employeePhone":"44 20 3088 6222",
+					"employeePhoneExt":"6222",
+					"employeeHierarchy":"Office of the CEO"
+				},
+				{
+					"employeeName":"Fred Quenzer",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Counsel",
+					"employeeDate":"March 02, 2015",
+					"employeeDept":["Legal"],
+					"employeeEmail":"fquenzer@isda.org",
+					"employeePhone":"(212) 901-6052",
+					"employeePhoneExt":"6052",
+					"employeeHierarchy":"Neither"
+				},
+				{
+					"employeeName":"George Handjinicolaou PhD",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"London",
+					"employeeTitle":"Deputy Chief Executive Officer and Head of Europe, Middle East and Africa",
+					"employeeDate":"August 30, 2011",
+					"employeeDept":false,
+					"employeeEmail":"GHandjinicolaou@isda.org",
+					"employeePhone":"44 (0) 203 088 3574",
+					"employeePhoneExt":"3574",
+					"employeeHierarchy":"Office of the CEO"
+				} 
+			]}
+
+			var keyValsObj = {}; 
+
+			/* 
+				var keyValsObj = {
+					employeeLocation: ["New York", "London", "Brussels"], 
+					employeeDept: ["IT", "Accounting", "HR", "Conferences", false],
+					employeeHierarchy: ["Office of the CEO", "Senior Staff", "Neither"]
+				}
+			*/
+
+
+			// Loops over all employees
+			$.each( employeeList.employees, function( index, obj ){ 
+
+				// loops over keys:   
+				for( var key in obj) {
+					// values of keys in employeeList
+					var val = obj[key]; 
+					// values of arrays in keyValsObj
+					var newValue = keyValsObj[key]
+					
+					// check if keyValsObj doesn't already have the key && 
+					// if key = employeeLocation, employeeDept, employeeHierarchy; if so, 
+					// add it as a key to keyValsObj w/a value of an empty array 
+					if( !keyValsObj.hasOwnProperty(key) ){
+						console.log("key: ", typeof key); 
+						if (key == "employeelocation" || key == "employeeDept" || key == "employeeHierarchy") {
+							keyValsObj[key] = [];  
+						};
+					};
+					console.log("keyValsObj", keyValsObj); 
+
+				}				
+				// check if val in employeeList is in arrays in keyValsObj
+				if ( keyValsObj[key].indexOf(val) == -1 ) {
+					keyValsObj[key].push(val);
+				}; 
+			}); 
+
+			//console.log("keyValsObj", keyValsObj);
+
+
+
+
+		}); // end DOM ready fxn
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="container-fluid">
+			<div id="allEmployeesContainer">
+
+				<div class="row">
+					<!-- Rendered toggles here -->
+					<div class="col-md-6" id="rendered-toggles">
+						<h2>Rendered Filters:</h2>
+						<hr>
+						<!-- ////////////////// -->
+					</div>
+
+					<!-- Render employees here -->
+					<div class="col-md-6" id="employees">
+						<div id="employees-render-container">
+						</div>
+					</div>
+
+				</div>
+				<br>
+			</div>
+		</div>
+	</div>
+	<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
+</body>
+</html>

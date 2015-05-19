@@ -3,11 +3,10 @@
 <head>
 	
 	<!-- Dynamically render selected filters/toggles with jQuery ++ Backbone employees -->
-	<!-- Change format of JSON object; change properties to match what's in WP -->
 
 
 	<meta charset="UTF-8">
-	<title>Example 7-1</title>
+	<title>Example 6-2</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -48,61 +47,88 @@
 			////////////////////////////
 			////// JSON employees //////
 			////////////////////////////
-
-			// WP PHP --> JSON --> Result: 
-			var employeeList = {"employees": [
+			var allEmployeesObj = [
 				{
-					"employeeName"		: "Andres Escobar",
-					"employeeImg"		: "http://placekitten.com/g/200/300",
-					"employeeLocation"	: "New York",
-					"employeeTitle"		: "Web Developer ",
-					"employeeDate"		: "January 21, 2014",
-					"employeeDept"		: "Information Technology",
-					"employeeEmail"		: "aescobar@isda.org",
-					"employeePhone"		: "+1 (212) 901-6038",
-					"employeePhoneExt"	: "6038",
-					"employeeHierarchy"	: "Neither"
+					"id": 1,
+					"name": "Jack",
+					"title": "Senior Astronaut",
+					"location": "New_York_City",
+					"department": "IT",
+					"collectionName": "All Employees",
+					"eyeColor" : "Blue",
+					"homeState": "NY"
 				},
 				{
-					"employeeName"		: "Andrew Scheck",
-					"employeeImg"		: "http://placekitten.com/g/200/300",
-					"employeeLocation"	: "New York",
-					"employeeTitle"		: "Network Systems Engineer",
-					"employeeDate"		: "October 01, 2014",
-					"employeeDept"		: "Information Technology",
-					"employeeEmail"		: "ascheck@isda.org",
-					"employeePhone"		: "+1 (212) 901-6059",
-					"employeePhoneExt"	: "6038",
-					"employeeHierarchy"	: "Neither"
+					"id": 2,
+					"name": "Andres",
+					"title": "Deep Sea Diver",
+					"location": "New_York_City",
+					"department": "IT",
+					"collectionName": "All Employees", 
+					"eyeColor" : "Brown",
+					"homeState": "NJ"
 				},
 				{
-					"employeeName"		: "Andres Escobar",
-					"employeeImg"		: "http://placekitten.com/g/200/300",
-					"employeeLocation"	: "New York",
-					"employeeTitle"		: "Web Developer ",
-					"employeeDate"		: "January 21, 2014",
-					"employeeDept"		: "Information Technology",
-					"employeeEmail"		: "aescobar@isda.org",
-					"employeePhone"		: "1 (212) 901-6038",
-					"employeePhoneExt"	: "6038",
-					"employeeHierarchy"	: "Neither"
+					"id": 3,
+					"name": "Chris",
+					"title": "Senior Pastry Chef",
+					"location": "London",
+					"department": "IT",
+					"collectionName": "All Employees",
+					"eyeColor" : "Green",
+					"homeState": "NY"
 				},
 				{
-					"employeeName"		: "Andres Escobar",
-					"employeeImg"		: "http://placekitten.com/g/200/300",
-					"employeeLocation"	: "New York",
-					"employeeTitle"		: "Web Developer ",
-					"employeeDate"		: "January 21, 2014",
-					"employeeDept"		: "Information Technology",
-					"employeeEmail"		: "aescobar@isda.org",
-					"employeePhone"		: "1 (212) 901-6038",
-					"employeePhoneExt"	: "6038",
-					"employeeHierarchy"	: "Neither"
+					"id": 4,
+					"name": "Liza",
+					"title": "Junior Web Developer",
+					"location": "Brussels",
+					"department": "IT",
+					"collectionName": "All Employees",
+					"eyeColor" : "Brown",
+					"homeState": "NY"
+				},
+				{
+					"id": 5,
+					"name": "Monica",
+					"title": "HR Manager",
+					"location": "London",
+					"department": "HR",
+					"collectionName": "All Employees",
+					"eyeColor" : "Brown",
+					"homeState": "NJ"
+				},
+				{
+					"id": 6,
+					"name": "Erinn",
+					"title": "Senior Conference Coordinator",
+					"location": "London",
+					"department": "Conferences",
+					"collectionName": "All Employees",
+					"eyeColor" : "Green",
+					"homeState": "NJ"
+				},
+				{
+					"id": 7,
+					"name": "Kelsey",
+					"title": "Junior Conference Coordinator",
+					"location": "New_York_City",
+					"department": "Conferences",
+					"collectionName": "All Employees",
+					"eyeColor" : "Green",
+					"homeState": "CT"
+				},
+				{
+					"id": 8,
+					"name": "Hussein",
+					"title": "Senior Accountant",
+					"location": "Brussels",
+					"department": "Accounting",
+					"collectionName": "All Employees",
+					"eyeColor" : "Brown",
+					"homeState": "VT"
 				}
-
-			]};
-
-			// console.log("employeeList.employees", employeeList.employees);
+			];
 
 
 
@@ -113,29 +139,29 @@
 
 			var keyValsObj = {}; 
 
-			/* var keyValsObj = {
-					employeeLocation: ["New York", "London", "Brussels"], 
-					employeeDepartment: ["IT", "Accounting", "HR", "Conferences"],
-					employeeHierarchy: ["Office of the CEO", "Senior Staff", "Neither"]
-				} */
-
-			// Loops over all employees; creates new object with filters as keys and values as array
-			$.each( employeeList.employees, function( index, obj ){ 
-				console.log("employeeList.employees", employeeList.employees);
+			// Loops over all employees
+			$.each( allEmployeesObj, function( index, obj ){ 
 				// loops over keys:   
 				for( var key in obj) {
-					// values of keys in employeeList
+					// values of keys in allEmployeesObj
 					var val = obj[key]; 
 					// values in arrays in keyValsObj
 					var newValue = keyValsObj[key]
 					
-					// check if keyValsObj doesn't already have the key; if not, add it as a key to keyValsObj w/a value of an empty array 
+					// check if keyValsObj doesn't already have the key && if key = department, location, eye color or home state; if so, add it as a key to keyValsObj w/a value of an empty array 
 					if ( !keyValsObj.hasOwnProperty(key) ) {
 					// if ( (!keyValsObj.hasOwnProperty(key)) && ( key == "department" ) ) {
-						keyValsObj[key] = [];  
+						console.log("typeof keyValsObj.department", typeof keyValsObj.department); 
+						console.log("keyValsObj.department", keyValsObj.department); 
+						// console.log("typeof key", typeof key);
+						if (key == "department") {
+							keyValsObj[key] = [];  
+							console.log("keyValsObj[key]", keyValsObj[key]); 
+						};
 					};
 
-					// check if val in employeeList is in arrays in keyValsObj
+
+					// check if val in allEmployeesObj is in arrays in keyValsObj
 					if ( keyValsObj[key].indexOf(val) == -1 ) {
 						keyValsObj[key].push(val);
 					}; 
@@ -143,6 +169,14 @@
 			}); 
 
 			// console.log("keyValsObj: ", keyValsObj); 
+
+			/* 
+				var keyValsObj = {
+					location: ["New York City", "London", "Brussels"], 
+					department: ["IT", "Accounting", "HR", "onferences"],
+					eyeColor: ["Blue", "Brown", "Green"]
+				}
+			*/
 
 			////////////////////////////////////////////////
 			/// Choose which filters to display here //////
@@ -152,7 +186,7 @@
 			$.each( keyValsObj, function(key1, val1){
 				// create div with class of key and append to #rendered-toggles
 				// console.log("key1: ", key1); 
-				if ( key1 == "employeeLocation" || key1 == "employeeDept" || key1 == "employeeHierarchy" ) {
+				if ( key1 == "location" || key1 == "department" || key1 == "eyeColor" || key1 == "homeState" ) {
 					var filterDiv = $("<div class=" + key1 + ">"); 
 					$("#rendered-toggles").append(filterDiv); 
 
@@ -194,7 +228,11 @@
 			// Define View for Collection
 			var collectionView = Backbone.View.extend({
 				initialize: function() {
-
+					// console.log("filterTracker:", this.filterTracker); 
+					// add properties to filterTracker
+					// loop over keyValsObj 
+					// console.log("keyValsObj:", keyValsObj); 
+					// console.log("keyValsObj.department:", keyValsObj.department); 
 				},
 
 				events: {
@@ -261,7 +299,7 @@
 			////////////////////////////
 
 			// Make sure it's really a JSON string:
-			var allEmployeesJSON = JSON.stringify(employeeList);
+			var allEmployeesJSON = JSON.stringify(allEmployeesObj);
 			// Parse the JSON string:
 			var employees = JSON.parse(allEmployeesJSON);
 			// Pass to a newly instantiated Collection:
@@ -285,22 +323,19 @@
 			<div id="allEmployeesContainer">
 
 				<div class="row">
-
-					<!-- Rendered toggles -->
+					<!-- Rendered toggles here -->
 					<div class="col-md-6" id="rendered-toggles">
 						<h2>Rendered Filters:</h2>
 						<hr>
-						<!-- //////// Render toggles here ////////// -->
+						<!-- ////////////////// -->
 					</div>
-					<!-- End Toggles -->	
-
+					
 					<!-- Render employees here -->
 					<div class="col-md-6" id="employees">
 						<div id="employees-render-container">
 						</div>
 					</div>
-					<!-- End employees list --> 
-
+					
 				</div>
 				<br>
 			</div>
