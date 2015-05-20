@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Example 4-4</title>
+	<title>Example 9-1</title>
+
+	<!-- Replica of 4-4 -->
+	<!-- PHP employee information -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -21,16 +24,15 @@
 	<!-- Template for collection -->
 	<script id="collectionTemplate" type="text/x-handlebars-template">
 		<div>
-			<h2>{{ this.[0].collectionName }} Collection:</h2>
+			<h2>Employees:</h2>
 			<hr>
 			<ol>
 				{{#each [] }}
-				<li><b>{{this.name}}</b></li>
+				<li><b>{{this.employeeName}}</b></li>
 					<ul>
-						<li>Location: {{this.location}}</li>
-						<li>Department: {{this.department}}</li>
-						<li>Eye color: {{this.eyeColor}}</li>
-						<li>Home state: {{this.homeState}}</li>
+						<li>Location: {{this.employeeLocation}}</li>
+						<li>Department: {{this.employeeDept}}</li>
+						<li>Hierarchy: {{this.employeeHierarchy}}</li>
 					</ul>
 				{{/each}}
 			</ol>
@@ -44,88 +46,96 @@
 			////////////////////////////
 			////// JSON employees //////
 			////////////////////////////
-			var allEmployeesObj = [
+			
+			// WP PHP --> JSON --> Result: 
+			var employeeList = {"employees": [
 				{
-					"id": 1,
-					"name": "Jack",
-					"title": "Senior Astronaut",
-					"location": "New York City",
-					"department": "IT",
-					"collectionName": "All Employees",
-					"eyeColor" : "Blue",
-					"homeState": "NY"
+					"employeeName":"Andres Escobar",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Web Developer ",
+					"employeeDate":"January 21, 2014",
+					"employeeDept":["IT"],
+					"employeeEmail":"aescobar@isda.org",
+					"employeePhone":"+1 (212) 901-6038",
+					"employeePhoneExt":"6038",
+					"employeeHierarchy":"Office of the CEO"
 				},
 				{
-					"id": 2,
-					"name": "Andres",
-					"title": "Deep Sea Diver",
-					"location": "New York City",
-					"department": "IT",
-					"collectionName": "All Employees", 
-					"eyeColor" : "Brown",
-					"homeState": "NJ"
+					"employeeName":"Andrew Scheck",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Network Systems Engineer",
+					"employeeDate":"October 01, 2014",
+					"employeeDept":["IT"],
+					"employeeEmail":"ascheck@isda.org",
+					"employeePhone":"+1 (212) 901-6059",
+					"employeePhoneExt":"6059",
+					"employeeHierarchy":"Neither"
 				},
 				{
-					"id": 3,
-					"name": "Chris",
-					"title": "Senior Pastry Chef",
-					"location": "London",
-					"department": "IT",
-					"collectionName": "All Employees",
-					"eyeColor" : "Green",
-					"homeState": "NY"
+					"employeeName":"Bella Rozenberg",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Assistant General Counsel\/Head of Regulatory and Legal Practice Group",
+					"employeeDate":"November 10, 2014",
+					"employeeDept":["Legal"],
+					"employeeEmail":"brozenberg@isda.org",
+					"employeePhone":"(202) 756-1972",
+					"employeePhoneExt":"1972",
+					"employeeHierarchy":"Senior Staff"
 				},
 				{
-					"id": 4,
-					"name": "Liza",
-					"title": "Junior Web Developer",
-					"location": "Brussels",
-					"department": "IT",
-					"collectionName": "All Employees",
-					"eyeColor" : "Brown",
-					"homeState": "NY"
+					"employeeName":"Christian Skala",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Senior Web Developer",
+					"employeeDate":"November 01, 2013",
+					"employeeDept":["IT"],
+					"employeeEmail":"cskala@isda.org",
+					"employeePhone":"(212) 901-6011",
+					"employeePhoneExt":"6011",
+					"employeeHierarchy":"Neither"
 				},
 				{
-					"id": 5,
-					"name": "Monica",
-					"title": "HR Manager",
-					"location": "London",
-					"department": "HR",
-					"collectionName": "All Employees",
-					"eyeColor" : "Brown",
-					"homeState": "NJ"
+					"employeeName":"David Geen",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"London",
+					"employeeTitle":"General Counsel",
+					"employeeDate":"November 01, 2006",
+					"employeeDept":["Legal"],
+					"employeeEmail":"dgeen@isda.org",
+					"employeePhone":"44 20 3088 6222",
+					"employeePhoneExt":"6222",
+					"employeeHierarchy":"Office of the CEO"
 				},
 				{
-					"id": 6,
-					"name": "Erinn",
-					"title": "Senior Conference Coordinator",
-					"location": "London",
-					"department": "Conferences",
-					"collectionName": "All Employees",
-					"eyeColor" : "Green",
-					"homeState": "NJ"
+					"employeeName":"Fred Quenzer",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"New York",
+					"employeeTitle":"Counsel",
+					"employeeDate":"March 02, 2015",
+					"employeeDept":["Conferences"],
+					"employeeEmail":"fquenzer@isda.org",
+					"employeePhone":"(212) 901-6052",
+					"employeePhoneExt":"6052",
+					"employeeHierarchy":"Neither"
 				},
 				{
-					"id": 7,
-					"name": "Kelsey",
-					"title": "Junior Conference Coordinator",
-					"location": "New York City",
-					"department": "Conferences",
-					"collectionName": "All Employees",
-					"eyeColor" : "Green",
-					"homeState": "CT"
-				},
-				{
-					"id": 8,
-					"name": "Hussein",
-					"title": "Senior Accountant",
-					"location": "Brussels",
-					"department": "Accounting",
-					"collectionName": "All Employees",
-					"eyeColor" : "Brown",
-					"homeState": "VT"
-				}
-			];
+					"employeeName":"George Handjinicolaou PhD",
+					"employeeImg":"http://www.placekitten.com/g/200/300",
+					"employeeLocation":"London",
+					"employeeTitle":"Deputy Chief Executive Officer and Head of Europe, Middle East and Africa",
+					"employeeDate":"August 30, 2011",
+					"employeeDept":false,
+					"employeeEmail":"GHandjinicolaou@isda.org",
+					"employeePhone":"44 (0) 203 088 3574",
+					"employeePhoneExt":"3574",
+					"employeeHierarchy":"Office of the CEO"
+				} 
+			]};
+
+			// employeeList = object < array < objects 
 
 			// Define Model
 			var EmployeeModel = Backbone.Model.extend({
@@ -150,7 +160,7 @@
 			// Define View for Collection
 			var collectionView = Backbone.View.extend({
 				initialize: function() {
-
+					console.log("Oh hai"); 
 				},
 
 				events: {
@@ -159,10 +169,9 @@
 
 				// Put here to persist the filterTracker always instead of creating it every time button toggled
  				filterTracker: { 
-					location: [],
-					department: [],
-					eyeColor: [], 
-					homeState: []
+					employeeLocation: [],
+					employeeDept: [],
+					employeeHierarchy: []
 				},
 
 				checkboxClickHandler: function(ev) {
@@ -189,9 +198,10 @@
 					
 					$.each(self.filterTracker, function(kind) {
 						if ( self.filterTracker[kind].length > 0 ) {
-							filteredArray = newFilteredCollection.filter(function(employee){
+							filteredArray = newFilteredCollection.filter(function(employee){ 
 								return self.filterTracker[kind].indexOf(employee.get(kind)) !== -1;
 							});		
+							console.log(filteredArray); 
 							newFilteredCollection = new EmployeesCollection(filteredArray); 
 						} 
 					});
@@ -217,7 +227,7 @@
 			////////////////////////////
 
 			// Make sure it's really a JSON string:
-			var allEmployeesJSON = JSON.stringify(allEmployeesObj);
+			var allEmployeesJSON = JSON.stringify(employeeList);
 			// Parse the JSON string:
 			var employees = JSON.parse(allEmployeesJSON);
 			// Pass to a newly instantiated Collection:
@@ -246,105 +256,59 @@
 						<h2>Filters:</h2>
 						<hr>
 
-						<div class="location">
+						<div class="employeeLocation">
 							<h3>Location:</h3>
 							<div class="checkbox">
 								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="New York City" kind="location">
-									New York City
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="New York" kind="employeeLocation">
+									New York
 								</label>
 							</div>
 							<div class="checkbox">
 								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="London" kind="location">
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="London" kind="employeeLocation">
 									London
 								</label>
 							</div>			
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brussels" kind="location">
-									Brussels
-								</label>
-							</div>
 						</div>
 
-						<div class="department">
+						<div class="employeeDept">
 							<h3>Department:</h3>
 							<div class="checkbox">
 								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="IT" kind="department">
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="IT" kind="employeeDept">
 									IT
 								</label>
 							</div>			
 							<div class="checkbox">
 								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Accounting" kind="department">
-									Accounting
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Legal" kind="employeeDept">
+									Legal
 								</label>
 							</div>
 							<div class="checkbox">
 								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="HR" kind="department">
-									HR
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Conferences" kind="department">
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Conferences" kind="employeeDept">
 									Conferences
 								</label>
 							</div>
 						</div>									
 
-						<div class="eyeColor">
-							<h3>Eye Color:</h3>
+						<div class="employeeHierarchy">
+							<h3>Hierarchy:</h3>
 							<div class="checkbox">
 								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Green" kind="eyeColor">
-									Green
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Office of the CEO" kind="employeeHierarchy">
+									Office of the CEO 
 								</label>
 							</div>			
 							<div class="checkbox">
 								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Brown" kind="eyeColor">
-									Brown
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Blue" kind="eyeColor">
-									Blue
+									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="Senior Staff" kind="employeeHierarchy">
+									Senior Staff
 								</label>
 							</div>
 						</div>
-
-						<div class="homeState">
-							<h3>Home State:</h3>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="NY" kind="homeState">
-									New York
-								</label>
-							</div>			
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="NJ" kind="homeState">
-									New Jersey
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="CT" kind="homeState">
-									CT
-								</label>
-							</div>						
-							<div class="checkbox">
-								<label>
-									<input name="checkOptions" type="checkbox" data-toggle="toggle" value="VT" kind="homeState">
-									Vermont 
-								</label>
-							</div
->						</div>
 					</div>
 					<!-- End Toggles -->	
 
